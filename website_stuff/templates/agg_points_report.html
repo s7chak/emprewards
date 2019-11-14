@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title> EVENT FORM</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+
+    <style>
+
+      #wrapper {
+        padding: 0px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #sidebar-wrapper {
+        position: fixed;
+        left: 50px;
+        width: auto;
+        height: 100%;
+        margin-top: 10px;
+        overflow:hidden;
+        padding: 0;
+        background: #cc5500;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #page-content-wrapper {
+        width: 85%;
+        position: absolute;
+        left: 80px;
+        padding: 15px;
+      }
+
+      body {
+        font-family: "Quicksand", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(0, 0, 0, 0.7); 
+      }
+
+/*      h1, h2, h3, h4, h5, h6 {
+        color: #000;
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 600;
+        margin: 0 0 30px 0; 
+      }*/
+
+      /* Sidebar Styles */
+
+      .sidebar-nav {
+        clear: both;
+        position: absolute;
+        top: 0;
+        right:15px;
+        width: 250px;
+        padding: 0;
+        list-style: none;
+        margin: 0 auto; /*It will center the block*/
+        text-align:center;
+        overflow: hidden;
+      }
+      .sidebar-nav ul {
+        padding:0;
+      }
+
+      .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+          padding: 0;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px; 
+      }
+
+      .sidebar-nav li a {
+        right:15px;
+        color: white;
+        text-decoration: none;
+        position: relative;
+        padding: 10px 0;
+        font-family: "Quicksand", Arial, sans-serif;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; 
+      }
+
+      .sidebar-nav li a:after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        bottom: 7px;
+        left: 0;
+        right: 0;
+        background-color: #F8F8F8;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -moz-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -ms-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -o-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      }
+
+
+      .sidebar-nav li a:hover {
+        text-decoration: none;
+        color: black; 
+      }
+
+      .sidebar-nav li a:hover:after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1);
+      }
+
+      .sidebar-nav li a:active {
+        color: #2c98f0; 
+      }
+
+      .sidebar-nav li a:active after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1); } 
+      }
+
+      .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+          color: white;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+      }
+
+      @media(min-width:768px) {
+        #wrapper {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            width: 300px;
+        }
+
+
+        #page-content-wrapper {
+            padding: 40px;
+            position: relative;
+        }
+
+        table.dataframe {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+
+        .dataframe td {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+        .dataframe th {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          background-color: #BEBEBE;
+        }
+
+        tr:nth-child(odd) {
+         background-color:#eee; 
+        }
+        
+        tr:nth-child(even) {
+          background-color:#fff; 
+        }
+
+        tr:hover { 
+          background-color:#ffa64d ;
+        }
+    </style>
+  </head>
+   
+  <div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" >
+            <li class="sidebar-brand">
+              <br><br>
+            </li>
+
+            <li>
+              <div class="logo-wrapper waves-light">
+                <img src="/static/images/UT_Logo.png" class="img-fluid flex-center" style='border-radius: 50%;height:50%;width: 50%;margin-right:35px;'> 
+              </div>
+            </li>
+            <br>
+            <li><a href="about" > ABOUT </a></li>
+            <li><a href="adduser" > ADD A USER </a></li>
+            <li><a href="addvenue" > ADD A VENUE </a></li> 
+            <li><a href="addevent" > START AN EVENT </a></li>
+            <li><a href="venuetimeslot" > DISPLAY TIMESLOT AVAILABILITY </a></li>
+            <li><a href="timeslotform" > DISPLAY ALL VENUES BY TIMESLOT </a></li>
+            <li><a href="venueevents" > LIST EVENTS AT A VENUE </a></li>
+            <li><a href="joinform" > JOIN AN EVENT </a></li>
+            <li><a href="deleteuser" > REMOVE A USER </a></li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1> Aggregate Monthly Points </h1>
+                    <p> 
+                      Aggregate Monthly Points!
+                       <br> <br> 
+                      <br> <br> <br> <br>
+                      {% for table in tables %}
+                          {{ table|safe }}
+                      {% endfor %}
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </html>
+<html>

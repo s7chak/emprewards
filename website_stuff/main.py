@@ -199,6 +199,20 @@ def usertable():
 
     return Response(jusers, mimetype='application/json')
 
+@app.route('/aggregatePoints')
+def main3():
+    if os.environ.get('GAE_ENV') == 'standard':
+        unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        cnx = pymysql.connect(user=db_user, password=db_password,
+                              unix_socket=unix_socket, db=db_name)
+    else:
+        host = '127.0.0.1'
+        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cursor = cnx.cursor()    
+    df = pd.read_sql_query("SELECT * FROM agg_points", cnx)
+    return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 if __name__ == '__main__':
     # app.run(host='127.0.0.1', port=8080, debug=True)
