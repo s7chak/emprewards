@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title> ABOUT </title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+
+    <style>
+
+      #wrapper {
+        padding: 0px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #sidebar-wrapper {
+        position: fixed;
+        left: 50px;
+        width: auto;
+        height: 100%;
+        margin-top: 10px;
+        overflow:hidden;
+        padding: 0;
+        background: #cc5500;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #page-content-wrapper {
+        width: 85%;
+        position: absolute;
+        left: 80px;
+        padding: 15px;
+      }
+
+      body {
+        font-family: "Quicksand", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(0, 0, 0, 0.7); 
+      }
+
+/*      h1, h2, h3, h4, h5, h6 {
+        color: #000;
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 400;
+        margin: 0 0 30px 0; 
+      }*/
+
+      /* Sidebar Styles */
+
+      .projheader {
+        padding-top: 20px;
+        margin-bottom: 1px;
+        display: block;
+        font-size: 15px;
+        text-transform: uppercase;
+        color: #808080;
+        font-weight: 500;
+        letter-spacing: 2px; }
+      .project {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 300px;
+        width: 100%;
+        display: block;
+        margin-bottom: 30px; }
+        .project .desc {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: #b34700;
+          opacity: 0;
+          -webkit-transition: 0.3s;
+          -o-transition: 0.3s;
+          transition: 0.3s; }
+          .project .desc .con {
+            padding: 20px;
+            display: block;
+            position: relative;
+            height: 300px; }
+            .project .desc .con .icon {
+              position: absolute;
+              bottom: -10px;
+              left: 340px;
+              right: 0px; }
+              .project .desc .con .icon span {
+                display: inline;
+                padding-right: 5px; }
+                .project .desc .con .icon span a {
+                  color: #333333;
+                  padding: 5px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon i {
+                font-size: 16px;
+                color: #333333; }
+
+              /*For when there is more than one icon*/
+              .project .desc .con .icon1 {
+              position: absolute;
+              bottom: -10px;
+              left: 310px;
+              right: 0px; }
+              .project .desc .con .icon1 span{
+              display: inline;
+              padding-right: 5px; }
+                .project .desc .con .icon1 span a {
+                  color: #333333;
+                  padding: 5px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon1 i {
+                font-size: 16px;
+                color: #333333; }
+
+                /* Work Meet the Team Blindsight*/
+              .project .desc .con .icon2 {
+              position: absolute; 
+              left: 10px;
+              right: 0px;}
+              .project .desc .con .icon2 span {
+                display: inline;
+                vertical-align: middle;
+                background-size: 20px;
+                padding-right: 5px; 
+               padding-left: 100px;}
+                .project .desc .con .icon2 span a {
+                  color: #333333;
+                  padding: 10px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon2 i {
+                font-size: 16px;
+                color: #333333; }
+                
+          .project .desc h3 {
+            font-family: "Quicksand", Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+            -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+            transition: opacity 0.3s, -webkit-transform 0.3s;
+            -o-transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+            -webkit-transform: translate3d(0, -15px, 0);
+            transform: translate3d(0, -15px, 0);
+            margin-bottom: 15px; }
+            .project .desc h3 a {
+              color: #fff; }
+          .project .desc span {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+            -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+            transition: opacity 0.3s, -webkit-transform 0.3s;
+            -o-transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+            -webkit-transform: translate3d(0, 15px, 0);
+            transform: translate3d(0, 15px, 0); }
+            .project .desc span a {
+              color: #000; }
+          @media screen and (max-width: 768px) {
+            .project .desc {
+              opacity: 1;
+              background: rgba(0, 0, 0, 0.4); }
+              .project .desc h3 {
+                font-style: 28px;
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                color: #000; }
+              .project .desc span {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0); } }
+        .project:hover .desc {
+          opacity: 1; }
+          .project:hover .desc h3 {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+          .project:hover .desc span {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+
+      .sidebar-nav {
+        clear: both;
+        position: absolute;
+        top: 0;
+        right:15px;
+        width: 250px;
+        padding: 0;
+        list-style: none;
+        margin: 0 auto; /*It will center the block*/
+        text-align:center;
+        overflow: hidden;
+      }
+      .sidebar-nav ul {
+        padding:0;
+      }
+
+      .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+          padding: 0;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px; 
+      }
+
+      .sidebar-nav li a {
+        right:15px;
+        color: white;
+        text-decoration: none;
+        position: relative;
+        padding: 10px 0;
+        font-family: "Quicksand", Arial, sans-serif;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; 
+      }
+
+      .sidebar-nav li a:after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        bottom: 7px;
+        left: 0;
+        right: 0;
+        background-color: #F8F8F8;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -moz-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -ms-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -o-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      }
+
+
+      .sidebar-nav li a:hover {
+        text-decoration: none;
+        color: black; 
+      }
+
+      .sidebar-nav li a:hover:after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1);
+      }
+
+      .sidebar-nav li a:active {
+        color: #2c98f0; 
+      }
+
+      .sidebar-nav li a:active after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1); } 
+      }
+
+      .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+          color: white;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+      }
+
+      @media(min-width:768px) {
+        #wrapper {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            width: 300px;
+        }
+
+
+        #page-content-wrapper {
+            padding: 40px;
+            position: relative;
+        }
+
+        table.dataframe {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+
+        .dataframe td {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+        .dataframe th {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          background-color: #BEBEBE;
+        }
+
+        tr:nth-child(odd) {
+         background-color:#eee; 
+        }
+        
+        tr:nth-child(even) {
+          background-color:#fff; 
+        }
+
+        tr:hover { 
+          background-color:#ffa64d ;
+        }
+
+    </style>
+  </head>
+   
+  <div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" >
+            <li class="sidebar-brand">
+              <br> <br>
+            </li>
+
+            <li>
+              <div class="logo-wrapper waves-light">
+                <img src="/static/images/UT_Logo.png" class="img-fluid flex-center" style='border-radius: 50%;height:50%;width: 50%;margin-right:35px;'> 
+              </div>
+            </li>
+            <br>
+            <li><a href="about" > ABOUT </a></li>
+            <li><a href="adduser" > ADD A USER </a></li>
+            <li><a href="addvenue" > ADD A VENUE </a></li> 
+            <li><a href="addevent" > START AN EVENT </a></li>
+            <li><a href="venuetimeslot" > DISPLAY TIMESLOT AVAILABILITY </a></li>
+            <li><a href="timeslotform" > DISPLAY ALL VENUES BY TIMESLOT </a></li>
+            <li><a href="venueevents" > LIST EVENTS AT A VENUE </a></li>
+            <li><a href="joinform" > JOIN AN EVENT </a></li>
+            <li><a href="deleteuser" > REMOVE AN USER </a></li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1> ABOUT </h1>
+                    <p>
+                      The purpose of this project was to develop a more intuitive UT room booking service that has both a web interface and an Android application. The users are the UT staff and students and would further be seperated into regular users and admin. The admin have special actions that only they can perform. 
+                      <br> <br> 
+                      With this service, a user is able to perform the following actions:
+                      <ul>
+                        <li> <b> Create an event: </b> Users are allowed to create their own events and book venues at a specific time </li>
+                        <li> <b> Display availability at a venue: </b> Users are able to see the available times of a specific venue</li>
+                        <li> <b> Display available times at all venues: </b> Users are able to see all the available venues at a specific time </li>
+                        <li> <b> Display events at a venue: </b> Users are able to see a specific event given a venue and time</li>
+                      </ul>
+
+                      An admin can do all of the actions above and more:
+                      <ul>
+                        <li> <b> Add a user: </b> Admins can add users into the database which would allow them to login into this service </li>
+                        <li> <b> Add a venue: </b> Admins can create new venues which would allow users to book events in them
+                        <li> <b> Remove an user: </b> Admins can remove users from the database which would stop them from using this service</li>
+                      </ul>
+
+                      <br>
+                      For more information about this project, please press the button below:
+                     <br> <br>
+
+                      <div class = "col-md-4"> </div>
+                       <a href="info">
+                         <button class="btn btn-primary btn-md align-center btn-block" style="max-width: 40%; background-color: #b34a00; border: none;">
+                                 INFO
+                         </button>
+                        </a>
+                        
+
+
+                    </p>
+                      <p>
+                        <span class = "projheader"> MEET THE TEAM </span> <hr>
+                      </p>
+                      <div class = "row">
+
+                        <p>
+                          <div class = "col-md-1"> </div>
+                          <div class="col-md-5 animate-box text-center" data-animate-effect="fadeInRight">
+                            <div class="project" style="background-image: url(static/images/yeggi.jpg);">
+                              <div class="desc">
+                                <div class="con">
+                                  <h3> Yeggi Lee </h3>
+                                  <div class = "text-center">
+                                   
+                                   yleekwon3@gmail.com
+                                    <br> 
+                                    <span class = "icon2">
+                                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+                                    <a href="https://www.linkedin.com/in/yeggilee/" target = "_blank">
+                                    <i class="fab fa-linkedin" style="font-size: 1.73em;"></i> </a>
+                                    </span>
+                                  </div> 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-5 animate-box text-center" data-animate-effect="fadeInRight">
+                            <div class="project" style="background-image: url(static/images/dhrob.jpg);">
+                              <div class="desc">
+                                <div class="con">
+                                  <h3> Dhrov Subramanian </h3>
+                                  <div class = "text-center">
+                                    
+                                    dhrov@utexas.edu
+                                    <br> 
+                                    <span class = "icon2">
+                                    <a href="https://www.linkedin.com/in/dhrov-s/" target = "_blank">
+                                    <i class="fab fa-linkedin" style="font-size: 1.73em;"></i> </a>
+                                    </span>
+                                  </div> 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                  
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </html>
+

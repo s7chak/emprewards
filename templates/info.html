@@ -1,0 +1,592 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title> INFO </title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+
+    <style>
+
+      #wrapper {
+        padding: 0px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #sidebar-wrapper {
+        position: fixed;
+        left: 50px;
+        width: auto;
+        height: 100%;
+        margin-top: 10px;
+        overflow:hidden;
+        padding: 0;
+        background: #cc5500;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #page-content-wrapper {
+        width: 85%;
+        position: absolute;
+        left: 80px;
+        padding: 15px;
+      }
+
+      body {
+        font-family: "Quicksand", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(0, 0, 0, 0.7); 
+      }
+
+/*      h1, h2, h3, h4, h5, h6 {
+        color: #000;
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 400;
+        margin: 0 0 30px 0; 
+      }*/
+
+      /* Sidebar Styles */
+
+      .projheader {
+        padding-top: 20px;
+        margin-bottom: 1px;
+        display: block;
+        font-size: 15px;
+        text-transform: uppercase;
+        color: #808080;
+        font-weight: 500;
+        letter-spacing: 2px; }
+      .project {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 300px;
+        width: 100%;
+        display: block;
+        margin-bottom: 30px; }
+        .project .desc {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: #b34700;
+          opacity: 0;
+          -webkit-transition: 0.3s;
+          -o-transition: 0.3s;
+          transition: 0.3s; }
+          .project .desc .con {
+            padding: 20px;
+            display: block;
+            position: relative;
+            height: 300px; }
+            .project .desc .con .icon {
+              position: absolute;
+              bottom: -10px;
+              left: 340px;
+              right: 0px; }
+              .project .desc .con .icon span {
+                display: inline;
+                padding-right: 5px; }
+                .project .desc .con .icon span a {
+                  color: #333333;
+                  padding: 5px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon i {
+                font-size: 16px;
+                color: #333333; }
+
+              /*For when there is more than one icon*/
+              .project .desc .con .icon1 {
+              position: absolute;
+              bottom: -10px;
+              left: 310px;
+              right: 0px; }
+              .project .desc .con .icon1 span{
+              display: inline;
+              padding-right: 5px; }
+                .project .desc .con .icon1 span a {
+                  color: #333333;
+                  padding: 5px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon1 i {
+                font-size: 16px;
+                color: #333333; }
+
+                /* Work Meet the Team Blindsight*/
+              .project .desc .con .icon2 {
+              position: absolute; 
+              left: 10px;
+              right: 0px;}
+              .project .desc .con .icon2 span {
+                display: inline;
+                vertical-align: middle;
+                background-size: 20px;
+                padding-right: 5px; 
+               padding-left: 100px;}
+                .project .desc .con .icon2 span a {
+                  color: #333333;
+                  padding: 10px;
+                  background: rgba(255, 255, 255, 0.5);
+                  -webkit-border-radius: 4px;
+                  -moz-border-radius: 4px;
+                  -ms-border-radius: 4px;
+                  border-radius: 4px; }
+              .project .desc .con .icon2 i {
+                font-size: 16px;
+                color: #333333; }
+                
+          .project .desc h3 {
+            font-family: "Quicksand", Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+            -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+            transition: opacity 0.3s, -webkit-transform 0.3s;
+            -o-transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+            -webkit-transform: translate3d(0, -15px, 0);
+            transform: translate3d(0, -15px, 0);
+            margin-bottom: 15px; }
+            .project .desc h3 a {
+              color: #fff; }
+          .project .desc span {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+            -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+            transition: opacity 0.3s, -webkit-transform 0.3s;
+            -o-transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
+            transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+            -webkit-transform: translate3d(0, 15px, 0);
+            transform: translate3d(0, 15px, 0); }
+            .project .desc span a {
+              color: #000; }
+          @media screen and (max-width: 768px) {
+            .project .desc {
+              opacity: 1;
+              background: rgba(0, 0, 0, 0.4); }
+              .project .desc h3 {
+                font-style: 28px;
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                color: #000; }
+              .project .desc span {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0); } }
+        .project:hover .desc {
+          opacity: 1; }
+          .project:hover .desc h3 {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+          .project:hover .desc span {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+
+      .sidebar-nav {
+        clear: both;
+        position: absolute;
+        top: 0;
+        right:15px;
+        width: 250px;
+        padding: 0;
+        list-style: none;
+        margin: 0 auto; /*It will center the block*/
+        text-align:center;
+        overflow: hidden;
+      }
+      .sidebar-nav ul {
+        padding:0;
+      }
+
+      .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+          padding: 0;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px; 
+      }
+
+      .sidebar-nav li a {
+        right:15px;
+        color: white;
+        text-decoration: none;
+        position: relative;
+        padding: 10px 0;
+        font-family: "Quicksand", Arial, sans-serif;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; 
+      }
+
+      .sidebar-nav li a:after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        bottom: 7px;
+        left: 0;
+        right: 0;
+        background-color: #F8F8F8;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -moz-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -ms-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -o-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      }
+
+
+      .sidebar-nav li a:hover {
+        text-decoration: none;
+        color: black; 
+      }
+
+      .sidebar-nav li a:hover:after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1);
+      }
+
+      .sidebar-nav li a:active {
+        color: #2c98f0; 
+      }
+
+      .sidebar-nav li a:active after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1); } 
+      }
+
+      .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+          color: white;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+      }
+
+      @media(min-width:768px) {
+        #wrapper {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            width: 300px;
+        }
+
+
+        #page-content-wrapper {
+            padding: 40px;
+            position: relative;
+        }
+
+        table.dataframe {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+
+        .dataframe td {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+        .dataframe th {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          background-color: #BEBEBE;
+        }
+
+        tr:nth-child(odd) {
+         background-color:#eee; 
+        }
+        
+        tr:nth-child(even) {
+          background-color:#fff; 
+        }
+
+        tr:hover { 
+          background-color:#ffa64d ;
+        }
+
+    </style>
+  </head>
+   
+  <div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" >
+            <li class="sidebar-brand">
+              <br> <br>
+            </li>
+
+            <li>
+              
+                <div class="logo-wrapper waves-light">
+                  <img src="/static/images/UT_Logo.png" class="img-fluid flex-center" style='border-radius: 50%;height:50%;width: 50%;margin-right:35px;'> 
+                </div>
+
+            </li>
+            <br>
+            <li><a href="about" > ABOUT </a></li>
+            <li><a href="adduser" > ADD A USER </a></li>
+            <li><a href="addvenue" > ADD A VENUE </a></li> 
+            <li><a href="addevent" > START AN EVENT </a></li>
+            <li><a href="venuetimeslot" > DISPLAY TIMESLOT AVAILABILITY </a></li>
+            <li><a href="timeslotform" > DISPLAY ALL VENUES BY TIMESLOT </a></li>
+            <li><a href="venueevents" > LIST EVENTS AT A VENUE </a></li>
+            <li><a href="joinform" > JOIN AN EVENT </a></li>
+            <li><a href="deleteuser" > REMOVE AN EVENT </a></li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1> INFORMATION </h1>
+                    <p>
+                      This project had three phases which included:
+                      <ol>
+                        <li> Developing the basic data model in SQL for storing data and creating python utility functions to manipulate the data </li>
+                        <li> Deploying the application to a Google App Engine's appspot.com site and building a web interface for the application </li>
+                        <li> Developing a functional Android app that can access the website using Android Studio and kotlin </li>
+                      </ol>
+
+                      <br>
+                      <b> FIRST PHASE </b> <br>
+                      The goal of this phase was to create the framework for an event-planning web application. <br> <br>
+
+                      POINTS OF INTEREST: <br> 
+                      <ul>
+                        <li>  Users: These are people who use the application </li>
+                        <li> Venues: These are the places where a pickup sport event may be planned </li>
+                        <li> Events: These are the events that are currently in play </li>
+                      </ul>
+
+                      <br>
+                      FUNCTIONS CREATED: <br> 
+                      <ul>
+                        <li>Add a user (admin only) </li>
+                        <li>Add a new venue (admin only) </li>
+                        <li>Start an event (user or admin on behalf of a user) </li>
+                        <li>Display timeslot availability </li> 
+                        <li>Display all venues where a particular timeslot is available </li>
+                        <li>List events at a venue given date/time </li>
+                        <li>Join an event </li>
+                        <li>Remove an event (admin only) </li>
+                      </ul>
+
+                      <br>
+                      TECHNOLOGIES USED: <br> 
+                      <ul>
+                        <li> Jupyter Notebook </li>
+                        <li> Sqlite </li>
+                        <li> Python </li>
+                      </ul>
+                      <br>
+
+                      <b> SECOND PHASE </b> <br>
+                      The goal of this phase was to deploy our app onto the web so that it is accessable via a browser. As such, the hosting was done through Google App Engine (GAE).  <br> <br>
+
+                      POINTS OF INTEREST: <br> 
+                      <ul>
+                        <li> The site is publically available which was done with GAE and hosted at comehither.appspot.com</li>
+                        <li> Google Cloud SQL Link was used for our SQL-based database </li>
+                        <li> Wrote python script that handles http requests and provides paths and corresponding classes to act on those paths </li>
+                        <li> Create HTML files for each function </li>  
+                      </ul>
+
+                      <br>
+                      TECHNOLOGIES USED: <br> 
+                      <ul>
+                        <li> Google App Engine </li>
+                        <li> Google Cloud SQL Link </li>
+                        <li> Python </li>
+                        <li> HTML/CSS/Javascript</li>
+                      </ul>
+                      <br>
+
+                      <b> THIRD PHASE </b> <br>
+                      The goal of this phase was to create an Android app that allows the user to access the functionality from phases 1 and 2. The app is intended for users and as such doesn't include the admin only functions. 
+
+                      <br> <br> 
+                      POINTS OF INTEREST: <br> 
+                      <ul>
+                        <li> Account Management: Login/Logout</li>
+                        <li> App-related Functions: Displays, Join an event, Show events </li>
+                      </ul>
+
+                      <br>
+                      TECHNOLOGIES USED: <br> 
+                      <ul>
+                        <li> Google App Engine </li>
+                        <li> Google Cloud SQL Link </li>
+                        <li> Python </li>
+                        <li> HTML/CSS/Javascript</li>
+                        <li> Android Studio </li>
+                        <li> Kotlin </li>
+                      </ul>
+
+                      If you want to download our app, please download using the button below. <br>
+                      <b> Note: </b> Since our app is supposed to be used by UT students, there is no register functionality as that would require an EID provided by the school. For testing purposes, we have provided an admin account. The email is bilbo.baggins@utexas.edu and the EID is bb12345. <br> <br>
+
+                      <div class = "col-md-4"> </div>
+                       <a href="static/app-release.apk">
+                         <button class="btn btn-primary btn-md align-center btn-block" style="max-width: 40%; background-color: #b34a00; border: none;" >
+                                 DOWNLOAD THE APP
+                         </button>
+                        </a>
+                    <br>
+                    </p>
+
+                    <p>
+                      <span class = "projheader"> HOW TO: WEB INTERFACE </span> <hr>
+
+                      <ol>
+                        <li> <b> Login Page </b> 
+                           <br> 
+                           The first page the user arrives to when entering comehither.appspot.com is the login page. Because of the purpose of the design, users are not able to register into the system. Only users that are already inside the database are able to login. The email and EID are both unique and not null and as such, we used them in order to validate the user as they login. <br>
+
+                           <div class = "col-md-2"></div>
+                            <img src="static/images/1.png" style="width:500px;height:260px;" style = "float">
+
+                        </li>
+                        <li> <b> Welcome Page </b> 
+                           <br> 
+                           Once the user logins, they are entered into a welcome page that informs the user of their admin status. The operations that the user can do are shown in the column on the left.<br> <br>
+
+                           <div class = "col-md-1"></div>
+                            <img src="static/images/2.jpg" style="width:550px;height:260px;" style = "float">
+                          <br> <br>
+                        </li>
+                        <li> <b> Form Page </b> 
+                           <br>
+                            Every operation starts with a form page that the user can fill out. The necessary parameters are shown in the form and once the submit button is pressed, the user is redirected to either a success page or error page. <br> <br>
+
+                           <div class = "col-md-1"></div>
+                            <img src="static/images/4.png" style="width:550px;height:260px;" style = "float"> <br> <br>
+                        </li>
+                        <li> <b> Success Page</b> 
+                           <br> 
+                           If the user has performed the operation succesfully, they are redirected to a success page. The success page states that the action was succesful and a review of the information inputted. <br> <br>
+
+                           <div class = "col-md-1"></div>
+                            <img src="static/images/5.png" style="width:550px;height:280px;" style = "float"> <br> <br>
+                        </li>
+                        <li> <b> Error Page </b> 
+                           <br>
+                           If the user is not an admin and tries to use admin-only operations, they are redirected to the welcome page that includes a warning that they are not admin. <br> <br>
+
+                           <div class = "col-md-1"></div>
+                            <img src="static/images/6.png" style="width:550px;height:280px;" style = "float"> <br> <br>
+                        </li>
+                      </ol>
+                    </p>
+                    <p>
+                      <span class = "projheader"> HOW TO: APP INTERFACE </span> <hr>
+                      <ol>
+                        <li> <b> Login Page </b> 
+                           <br> 
+                           The first fragment the user arrives to is the login page. Similarily to the webpage, there is no register user. 
+                           <br> <br>
+
+                           <div class = "col-md-4"></div>
+                            <img src="static/images/7.jpg" style="width:250px;height:560px;" style = "float"> <br> <br>
+
+                        </li>
+                        <li> <b> Navigation View </b> 
+                           <br> 
+                           Once the user logins, they are entered into a navigation fragment that contains a list of the operations the user can do within the app. <br> <br>
+
+                           <div class = "col-md-4"></div>
+                            <img src="static/images/8.jpg" style="width:250px;height:560px;" style = "float">
+                          <br> <br>
+                        </li>
+                        <li> <b> Form Fragment </b> 
+                           <br>
+                            When the user picks an operation, they are taken to that specific fragment where they are asked to input certain information. Once the submit button is pressed, a textview populates with the information requested.  A back button is also included which returns the user to the Navigation fragment. 
+
+                            <br> <br>
+
+                           <div class="row">
+                            <div class="col-md-2"> </div>
+                            <img src="static/images/9.jpg" style="width:250px;height:560px;" style = "float">   
+                            <img src="static/images/10.jpg" style="width:250px;height:560px;" style = "float"> <br> <br>
+                          </div>
+                        </li>
+
+                      </ol>
+                    </p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </html>
+

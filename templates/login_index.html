@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title> WELCOME PAGE</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+
+
+    <style>
+
+      #wrapper {
+        padding: 0px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #sidebar-wrapper {
+        position: fixed;
+        left: 50px;
+        width: auto;
+        height: 100%;
+        margin-top: 10px;
+        overflow:hidden;
+        padding: 0;
+        background: #cc5500;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      #page-content-wrapper {
+        width: 85%;
+        position: absolute;
+        left: 80px;
+        padding: 15px;
+      }
+
+      body {
+        font-family: "Quicksand", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(0, 0, 0, 0.7); 
+      }
+
+/*      h1, h2, h3, h4, h5, h6 {
+        color: #000;
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 400;
+        margin: 0 0 30px 0; 
+      }*/
+
+      /* Sidebar Styles */
+
+      .sidebar-nav {
+        clear: both;
+        position: absolute;
+        top: 0;
+        right:15px;
+        width: 250px;
+        padding: 0;
+        list-style: none;
+        margin: 0 auto; /*It will center the block*/
+        text-align:center;
+        overflow: hidden;
+      }
+      .sidebar-nav ul {
+        padding:0;
+      }
+
+      .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+          padding: 0;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px; 
+      }
+
+      .sidebar-nav li a {
+        right:15px;
+        color: white;
+        text-decoration: none;
+        position: relative;
+        padding: 10px 0;
+        font-family: "Quicksand", Arial, sans-serif;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; 
+      }
+
+      .sidebar-nav li a:after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        bottom: 7px;
+        left: 0;
+        right: 0;
+        background-color: #F8F8F8;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -moz-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -ms-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -o-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      }
+
+
+      .sidebar-nav li a:hover {
+        text-decoration: none;
+        color: black; 
+      }
+
+      .sidebar-nav li a:hover:after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1);
+      }
+
+      .sidebar-nav li a:active {
+        color: #2c98f0; 
+      }
+
+      .sidebar-nav li a:active after {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        -moz-transform: scaleX(1);
+        -ms-transform: scaleX(1);
+        -o-transform: scaleX(1);
+        transform: scaleX(1); } 
+      }
+
+      .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+          color: white;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+      }
+
+      @media(min-width:768px) {
+        #wrapper {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            width: 300px;
+        }
+
+
+        #page-content-wrapper {
+            padding: 40px;
+            position: relative;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+    </style>
+  </head>
+   
+<div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" >
+            <li class="sidebar-brand">
+              <br><br>
+            </li>
+
+            <li>
+              <div class="logo-wrapper waves-light">
+                <img src="/static/images/UT_Logo.png" class="img-fluid flex-center" style='border-radius: 50%;height:50%;width: 50%;margin-right:35px;'> 
+              </div>
+            </li>
+            <br>
+            <li><a href="about" > ABOUT </a></li>
+            <li><a href="adduser" > ADD A USER </a></li>
+            <li><a href="addvenue" > ADD A VENUE </a></li> 
+            <li><a href="addevent" > START AN EVENT </a></li>
+            <li><a href="venuetimeslot" > DISPLAY TIMESLOT AVAILABILITY </a></li>
+            <li><a href="timeslotform" > DISPLAY ALL VENUES BY TIMESLOT </a></li>
+            <li><a href="venueevents" > LIST EVENTS AT A VENUE </a></li>
+            <li><a href="joinform" > JOIN AN EVENT </a></li>
+            <li><a href="deleteuser" > REMOVE A USER </a></li>
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1> WELCOME </h1>
+                    <p> Thanks for logging in! Welcome to the UT Room Scheduler and we hope this allows you to book the necessary rooms for success in your studying. If you have any questions please email us at roomscheduler@utexas.edu. Otherwise, for more info about this service, please press the button below.  <br> <br> 
+
+                      <div style="text-align:center;">
+
+                       {% if admin == 1 %}
+                         <strong>You are registered as an admin </strong> 
+                       {% else %}
+                         <strong>You are registered as a user </strong> 
+                       {% endif %}
+                     </div>
+
+                      <br> 
+                      Please look at the left in order to see what actions you can make. <br>
+
+                     <h3> {{ adminError }} </h3>
+                  
+                  
+                    </p>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </html>
+
+<!-- 
+//   <div class="navbar navbar-inverse navbar-fixed-left">
+//     <a class="navbar-brand" href="#"> ACTIONS </a>
+//     <ul class="nav navbar-nav">
+//       <li><a href="adduser" > Add a User </a></li>
+//       <li><a href="addvenue" > Add Venue </a></li> 
+//       <li><a href="addevent" > Start an Event </a></li>
+//       <li><a href="venuetimeslot" > Display Timeslot Availability at a Venue   </a></li>
+//       <li><a href="timeslotform" > Display All Venues by Timeslot </a></li>
+//       <li><a href="#" > List Events At a Venue Given Date/Time </a></li>
+//       <li><a href="#" > Join an Event </a></li>
+//       <li><a href="#" > Remove a User </a></li>
+//     </ul>
+//   </div>
+
+//   <div class="container">
+//    <div class="row">
+//      <h1>WELCOME</h1>
+     
+//      <p> Thanks for logging in! <br> <br> 
+
+//         {% if admin == 1 %}
+//           <strong>You are registered as an admin </strong> 
+//         {% else %}
+//           <strong>You are registered as a user </strong> 
+//         {% endif %}
+
+//         <br> Please look at the left in order to see what actions you can make. <br>
+
+//         <h3> {{ adminError }} </h3>
+//       </p>
+//    </div>
+//   </div>
+// </html>
+//  -->
