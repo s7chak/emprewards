@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title> USER FORM</title>
+    <title> POINTS FORM</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -52,7 +52,7 @@
 /*      h1, h2, h3, h4, h5, h6 {
         color: #000;
         font-family: "Playfair Display", Georgia, serif;
-        font-weight: 400;
+        font-weight: 600;
         margin: 0 0 30px 0; 
       }*/
 
@@ -175,7 +175,50 @@
             position: relative;
         }
 
-        #wrapper.toggled #page-content-wrapper {
+        table.dataframe {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+
+        .dataframe td {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+        .dataframe th {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          background-color: #BEBEBE;
+        }
+
+        tr:nth-child(odd) {
+         background-color:#eee; 
+        }
+        
+        tr:nth-child(even) {
+          background-color:#fff; 
+        }
+
+        tr:hover { 
+          background-color:#ffa64d ;
+        }
     </style>
   </head>
    
@@ -205,37 +248,56 @@
     </div>
     <!-- /#sidebar-wrapper -->
 
-      <head>
-         <title>Delete a user</title>
-         <div id="page-content-wrapper">
-            <div class="container-fluid">
-               <div class="row">
-                  <div class="col-lg-12">
-                     <h1>DELETE A USER FORM</h1>
-                        <p>
-                           As an admin, you are allowed to add a new user into the database. This will allow them to login into this web page and create events. <br>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1> GIVE POINTS</h1>
+                    <p> 
+                      Give Points!
+                       <br> <br> 
 
-                           {% if error %}
-                           <p><strong>Error: {{ error }} </strong> </p>
-                           {% endif %}
-                           <br>
+                      <form method="post" action="{{ url_for('eventsubmitted') }}">
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4"><label for="user_fname">FIRST NAME:</label>  </div>
+                        <input type="text" size="35" name="user_fname"><br/>
 
-                           <form method="post" action="{{ url_for('deleted_form') }}">
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4"><label for="user_lname">LAST NAME:</label>  </div>
+                        <input type="text" size="35" name="user_lname"><br/>
+                        
 
-                              <div class="col-md-2"> </div><div class="col-md-2"> <label for="email">EMAIL:</label> </div>
-                              <input type="email" name="email" size="35"><br />
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4"> 
+                          <label for="email">EMAIL:</label> 
+                        </div>
+                        <input type="text" name="email" size="35"><br />
 
-                              <div class="col-lg-5"> </div><div class = "col-md-5"> 
-                                <button class="btn btn-primary btn-md align-self-end btn-block" style="max-width: 40%; background-color: #b34a00; border: none;" type="submit">
-                                  <i class="fas fa-magic"> SUBMIT </i> 
-                                </button>
-                              </div>
-                           </form>
-                        </p>
-                     </div>
-                  </div>
-               </div>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4"><label for="points">HOW MANY POINTS DO YOU WANT TO GIFT?:</label>  </div>
+                        <input type="number" size="35" name="points"><br/>
+
+                        <br> 
+
+                        <div class="col-lg-6"> </div><div class = "col-md-5">  
+                          <button class="btn btn-primary btn-md align-self-end btn-block" style="max-width: 40%; background-color: #b34a00; border: none;" type="submit">
+                            <i class="fas fa-magic"> SUBMIT </i> 
+                          </button>
+                        </div>
+
+                      </form>
+                      <br> <br> <br> <br>
+                      {% for table in tables %}
+                          {{ table|safe }}
+                      {% endfor %}
+                    </p>
+                </div>
+              </div>
             </div>
-         </div>
-   </div>
-</html>
+          </div>
+        </div>
+      </div>
+    </div>
+  </html>
+<html>
