@@ -216,6 +216,14 @@ def main3():
     df = pd.read_sql_query("SELECT * FROM agg_points", cnx)
     return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
+@app.route('/report2')
+def report2():
+    return ('x')
+
+@app.route('/report3')
+def report3():
+    return ('x')
+
 @app.route('/givePoints')
 def main4():
     if os.environ.get('GAE_ENV') == 'standard':
@@ -286,6 +294,10 @@ def pointsGiven():
 
     cnx.commit()
     return render_template('about.html')
+
+@app.route('/redeemPoints')
+def redeem():
+    return('x')
 
 if __name__ == '__main__':
     # app.run(host='127.0.0.1', port=8080, debug=True)
