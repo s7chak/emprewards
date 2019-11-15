@@ -80,13 +80,18 @@ def main1():
 ## Add user - submitted form 
 @app.route('/usersubmitted', methods=['GET', 'POST'])
 def usersubmitted():
-    name = request.form['name']
+    user_fname = request.form['fname']
+    user_lname = request.form['lname']
     email = request.form['email']
     phone = request.form['phone']
     password = request.form['password']
     admin = request.form['admin']
+    
+    salt = uuid.uuid4().hex
+    hashed_password = hashlib.sha512(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
+    hpassword=str(hashed_password)
 
-    if len(password) != 7:
+    if len(password) == 0:
         return ("INVALID password. PLEASE TRY AGAIN!")
     else:
         if os.environ.get('GAE_ENV') == 'standard':
@@ -95,7 +100,8 @@ def usersubmitted():
                                   unix_socket=unix_socket, db=db_name)
         else:
             host = '127.0.0.1'
-            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+            # cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
         cursor = cnx.cursor()
 
         myEmail = session.get('myEmail')
@@ -106,11 +112,11 @@ def usersubmitted():
         print("THIS IS THE STUPID ENTRY", entry)
         print("THIS IS THE STUPID ENTRY", [x[5] for x in entry])
 
-        tuplefromList = [x[5] for x in entry]
+        tuplefromList = [x[7] for x in entry]
         adminCheck = tuplefromList[0]
-        
+        print(hpassword)
         if adminCheck == 1:
-            cursor.execute('INSERT INTO users(user_fname, user_lname, phone, email, password, admin) VALUES (%s, %s, %s, %s, %s)', (user_fname,user_lname, phone, email, password, admin))
+            cursor.execute('INSERT INTO users(user_fname, user_lname, phone, email, password, admin_status) VALUES (%s, %s, %s, %s, %s, %s)', (user_fname,user_lname, phone, email, hpassword, admin))
             cnx.commit()
             cnx.close()
             adminError = None
@@ -119,7 +125,7 @@ def usersubmitted():
             return render_template('login_index.html', adminError=adminError)
     
     return render_template('usersubmitted.html', user_fname=user_fname, user_lname=user_lname,email=email, phone=phone, password=password,admin=admin)
- 
+
 @app.route('/deleteuser')
 def deletemain():
     return render_template('delete_user_form.html')
@@ -238,40 +244,56 @@ def main4():
     return render_template('give_points.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 @app.route('/pointsGiven', methods=['GET', 'POST'])
-def eventsubmitted():
-    return ("x")
+def pointsGiven():
+    user_fname = request.form['user_fname']
+    user_lname = request.form['user_lname']
+    email = request.form['email']
+    points = request.form['points']
+
+    myEmail = session.get('myEmail')
+
+    if os.environ.get('GAE_ENV') == 'standard':
+        unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        cnx = pymysql.connect(user=db_user, password=db_password,
+                              unix_socket=unix_socket, db=db_name)
+    else:
+        host = '127.0.0.1'
+        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cursor = cnx.cursor()    
+
+    you = cursor.execute('SELECT e.user_id FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (myEmail,))
+    print(you)
+    entry1 = cursor.fetchall()
+    print(entry1)
+
+    pointsToGive = cursor.execute('SELECT e.points FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s ORDER BY e.month_id DESC LIMIT 1', (myEmail,))
+    print(pointsToGive)
+    entry2 = cursor.fetchall()
+    print(entry2)
+
+    recieve = cursor.execute('SELECT e.user_id FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (email,))
+    print(recieve)
+    entry3 = cursor.fetchall()
+
+    yous = entry1[0][0]
+    pointsToGiven = (entry2[0])
+    reciever = entry3[0][0]
+
+    if int(points)< int(pointsToGiven[0]):
+        cursor.callproc('stored_proc',(yous,reciever,points))
+    else:
+        raise Exception('Error: You Connot send more points than you currently have!')
+
+    cnx.commit()
+    return render_template('about.html')
+
 if __name__ == '__main__':
     # app.run(host='127.0.0.1', port=8080, debug=True)
     app.run(host='localhost', debug=True)
 
-#     name = request.form['name']
-#     description = request.form['description']
-#     expected_attendance = request.form['expected-attendance']
-#     venue_id = request.form['venue_id']
-#     event_owner = request.form['event_owner']
-#     start_time = request.form['start_time']
 
-#     print(name, description, venue_id, event_owner, start_time)
 
-#     if os.environ.get('GAE_ENV') == 'standard':
-#         unix_socket = '/cloudsql/{}'.format(db_connection_name)
-#         cnx = pymysql.connect(user=db_user, password=db_password,
-#                               unix_socket=unix_socket, db=db_name)
-#     else:
-#         host = '127.0.0.1'
-#         cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
-#     cursor = cnx.cursor()    
-#     infoGrab = cursor.execute('SELECT * FROM venues WHERE venue_id = %s', (venue_id,))
-#     entry = cursor.fetchall()
-
-#     print("THIS IS ENTRY", entry)
-
-#     tuplefromList = [x[4] for x in entry]
-#     venueAttendance = int(tuplefromList[0])
-
-#     print(tuplefromList)
-#     print("VENUE ATTENDANCE:", venueAttendance)
-            
+      
 
 #     if int(expected_attendance) < venueAttendance:  
 #         venueCheck = cursor.execute('SELECT * FROM Time WHERE venue_id = %s AND timeslot = %s', (venue_id, start_time,))

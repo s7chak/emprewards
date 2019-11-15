@@ -38,6 +38,7 @@ CREATE TABLE emprewardz_redemption (
 
 ALTER TABLE emprewardz_redemption ADD CONSTRAINT fk_redeem FOREIGN KEY (user_id) REFERENCES users(pk_user_id);
 
+
 CREATE or REPLACE View agg_points AS
 Select A.user_id, A.PointsRedeemed, A.PointsGiven, B.PointsRecieved from
 	(SELECT user_id, points_redeemed as PointsRedeemed, points as PointsGiven from emprewardz_redemption as red join emprewardz_transact_points as trpo
@@ -47,3 +48,27 @@ Select A.user_id, A.PointsRedeemed, A.PointsGiven, B.PointsRecieved from
 	on red.user_id = trpo.source_user
 	group by user_id) AS B
 	on A.user_id=B.user_id;
+
+	
+DELIMITER //
+CREATE PROCEDURE stored_proc(
+    IN sources VARCHAR(255),
+	IN dest VARCHAR(255),
+    IN pointsGR int
+) 
+BEGIN
+	Insert into emprewardz_transact_points values(sources,dest,pointsGR,SYSDATE());
+    
+	UPDATE emprewardz_point_holder
+    SET emprewardz_point_holder.points = emprewardz_point_holder.points - pointsGR 
+	WHERE sources = emprewardz_point_holder.user_id
+    ORDER BY month_id DESC LIMIT 1; 
+	
+	UPDATE emprewardz_point_holder
+    SET emprewardz_point_holder.points = emprewardz_point_holder.points + pointsGR 
+	WHERE dest = emprewardz_point_holder.user_id
+    ORDER BY month_id DESC LIMIT 1;
+END//
+
+
+
