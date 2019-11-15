@@ -7,6 +7,10 @@ from flask import Flask,render_template,request,session, jsonify, Response
 import datetime
 import pandas as pd
 import json
+import uuid
+import hashlib
+from datetime import date
+
 
 
 ## Connecting to the Google Cloud Database
@@ -114,10 +118,6 @@ def usersubmitted():
     phone = request.form['phone']
     password = request.form['password']
     admin = request.form['admin']
-    
-    salt = uuid.uuid4().hex
-    hashed_password = hashlib.sha512(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
-    hpassword=str(hashed_password)
 
     if len(password) == 0:
         return ("INVALID password. PLEASE TRY AGAIN!")
@@ -128,12 +128,16 @@ def usersubmitted():
                                   unix_socket=unix_socket, db=db_name)
         else:
             host = '127.0.0.1'
-            # cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
-            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+            #cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
         cursor = cnx.cursor()
 
         myEmail = session.get('myEmail')
         print("THIS IS MY password", myEmail)
+
+        salt = uuid.uuid4().hex
+        hashed_password = hashlib.sha512(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
+        hpassword=str(hashed_password)
 
         userCheck = cursor.execute('SELECT * from users where email = %s', (myEmail,))
         entry = cursor.fetchall()
@@ -145,6 +149,19 @@ def usersubmitted():
         print(hpassword)
         if adminCheck == 1:
             cursor.execute('INSERT INTO users(user_fname, user_lname, phone, email, password, admin_status) VALUES (%s, %s, %s, %s, %s, %s)', (user_fname,user_lname, phone, email, hpassword, admin))
+
+            hi = cursor.execute('SELECT pk_user_id from users where email = %s', (email,))
+            entry = cursor.fetchall()
+            print(entry)
+            ID=entry[0][0]
+            print(ID)
+
+            hi = cursor.execute('SELECT max(month_id) from months')
+            entry2 = cursor.fetchall()
+            months=entry2[0][0]
+            print(months)
+
+            cursor.execute('INSERT INTO emprewardz_point_holder(user_id,points, month, month_id0) VALUES (%s, %s, %s, %s)',(ID,1000,date.today(),months))
             cnx.commit()
             cnx.close()
             adminError = None
@@ -152,7 +169,7 @@ def usersubmitted():
             adminError = 'You are not allowed to perform this action!'
             return render_template('login_index.html', adminError=adminError)
     
-    return render_template('usersubmitted.html', user_fname=user_fname, user_lname=user_lname,email=email, phone=phone, password=password,admin=admin)
+    return render_template('user_submitted_form.html', user_fname=user_fname, user_lname=user_lname,email=email, phone=phone, password=password,admin=admin)
 
 @app.route('/deleteuser')
 def deletemain():
@@ -250,7 +267,16 @@ def report2():
 
 @app.route('/report3')
 def report3():
-    return ('x')
+    if os.environ.get('GAE_ENV') == 'standard':
+        unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        cnx = pymysql.connect(user=db_user, password=db_password,
+                              unix_socket=unix_socket, db=db_name)
+    else:
+        host = '127.0.0.1'
+        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cursor = cnx.cursor()    
+    df = pd.read_sql_query("SELECT A.user_id, A.month_id2, A.PointsRedeemed FROM agg_points as A", cnx)
+    return render_template('redeem_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 @app.route('/givePoints')
 def main4():
@@ -285,6 +311,7 @@ def pointsGiven():
     user_lname = request.form['user_lname']
     email = request.form['email']
     points = request.form['points']
+    comment = request.form['comment']
 
     myEmail = session.get('myEmail')
 
@@ -325,14 +352,14 @@ def pointsGiven():
     print(yous,reciever,points,months)
 
     if int(points)< int(pointsToGiven[0]):
-        cursor.callproc('stored_proc',(yous,reciever,points,months))
+        cursor.callproc('stored_proc',(yous,reciever,points,months,comment))
         cnx.commit()
 
     else:
         raise Exception('Error: You Connot send more points than you currently have!')
 
     cnx.close()
-    return render_template('about.html')
+    return render_template('give_points.html')
 
 @app.route('/redeemPoints')
 def redeem():

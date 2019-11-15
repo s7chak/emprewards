@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title> USER FORM</title>
+    <title> REDEMPTION</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -52,7 +52,7 @@
 /*      h1, h2, h3, h4, h5, h6 {
         color: #000;
         font-family: "Playfair Display", Georgia, serif;
-        font-weight: 400;
+        font-weight: 600;
         margin: 0 0 30px 0; 
       }*/
 
@@ -175,7 +175,50 @@
             position: relative;
         }
 
-        #wrapper.toggled #page-content-wrapper {
+        table.dataframe {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+
+        .dataframe td {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          padding: 8px;
+        }
+        .dataframe th {
+          border: none;
+          border-bottom: 1px solid #C8C8C8;
+          border-collapse: collapse;
+          text-align:center;
+          padding: 10px;
+          margin-bottom: 40px;
+          font-size: 0.9em;
+          background-color: #BEBEBE;
+        }
+
+        tr:nth-child(odd) {
+         background-color:#eee; 
+        }
+        
+        tr:nth-child(even) {
+          background-color:#fff; 
+        }
+
+        tr:hover { 
+          background-color:#ffa64d ;
+        }
     </style>
   </head>
    
@@ -192,7 +235,7 @@
               </div>
             </li>
             <br>
-            <li><a href="about" > ABOUT </a></li>
+              <li><a href="about" > ABOUT </a></li>
               <li><a href="adduser" > ADD A USER </a></li>
               <li><a href="aggregatePoints" > AGGREGATE POINTS REPORT </a></li> 
               <li><a href="report2" > STINGY USER REPORT </a></li>
@@ -207,40 +250,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                  <h1> ADD USER </h1>
+                  <h1> Redemptions by Month</h1>
                     <p> 
-                      As an admin, you are allowed to add a new user into the database. This will allow them to login into this web page and create events.   <br> <br> 
-                      <form method="post" action="{{ url_for('usersubmitted') }}">
-                        <div class="col-md-2"> </div><div class="col-md-2"> <label for="fname">FIRST NAME:</label> </div>
-                        <input type="text" size="35" name="fname"><br/>
-
-                        <div class="col-md-2"> </div><div class="col-md-2"> <label for="lname">LAST NAME:</label> </div>
-                        <input type="text" size="35" name="lname"><br/>
-                        
-                        <div class="col-md-2"> </div><div class="col-md-2"> <label for="phone">PHONE:</label> </div>
-                        <input type="text" name="phone" size="35"><br/>
-
-
-                        <div class="col-md-2"> </div><div class="col-md-2"> <label for="email">EMAIL:</label> </div>
-                        <input type="email" name="email" size="35"><br />
-
-                        <div class="col-md-2"> </div><div class="col-md-2"><label for="password">PASSWORD:</label></div>
-                        <input type="text" name="password" size="35"><br />
-
-                        <div class="col-md-2"> </div><div class="col-md-2"><label for="admin">ADMIN:</label> </div>
-                        <input type="text" name="admin" size="35"><br /> 
-
-                        <br> 
-
-                        <div class="col-lg-5"> </div><div class = "col-md-5"> 
-
-                          <button class="btn btn-primary btn-md align-self-end btn-block" style="max-width: 40%; background-color: #b34a00; border: none;" type="submit">
-                            <i class="fas fa-magic"> SUBMIT </i> 
-                          </button>
-                        </div>
-                      </form>
-
-                  
+                      Redemptions by Month!
+                       <br> <br> 
+                      <br> <br> <br> <br>
+                      {% for table in tables %}
+                          {{ table|safe }}
+                      {% endfor %}
                     </p>
                 </div>
               </div>
@@ -250,4 +267,4 @@
       </div>
     </div>
   </html>
-
+<html>
