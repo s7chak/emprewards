@@ -1,11 +1,9 @@
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Yeggi', 'Lee', '7745787750', 'yleekwon3@gmail.com', 'yl35726', True, SYSDATE());
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Dhrov', 'Subramanian', '5127580498', 'dhrov@utexas.edu', 'ds39547', True, SYSDATE());
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Subhayu', 'Chakravarty', '7377011233', 'subhayu@utexas.edu', 'sc59695', True, SYSDATE());
-
 INSERT into months(month_id) values(1);
 INSERT into months(month_id) values(2);
 INSERT into months(month_id) values(3);
-
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(1,2,50,'2019-09-01',1);
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(1,2,50,'2019-09-01',1);
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(2,1,100,'2019-09-01',1);
