@@ -60,6 +60,18 @@ Select A.source_user, B.month_id1, A.PointsRedeemed, A.PointsGiven, B.PointsRece
 	on A.source_user=B.dest_user and A.month_id1=B.month_id1
     order by B.PointsReceived Desc;
 
+CREATE or REPLACE View agg_points2 AS
+Select A.user_id, A.month_id2, A.PointsRedeemed, A.PointsGiven, B.PointsReceived from
+    (SELECT red.user_id, red.month_id2, trpo.month_id1, sum(red.points_redeemed) as PointsRedeemed, sum(trpo.points) as PointsGiven
+    from emprewardz_redemption as red
+    join emprewardz_transact_points as trpo on red.user_id = trpo.source_user and red.month_id2=trpo.month_id1
+	group by red.month_id2,trpo.month_id1, red.user_id) A
+    Join
+    (SELECT dest_user, month_id1, sum(points) as PointsReceived from emprewardz_transact_points
+	group by month_id1,dest_user) B
+	on A.user_id=B.dest_user and A.month_id2=B.month_id1
+    order by B.PointsReceived Desc;
+
 
 DELIMITER //
 CREATE PROCEDURE stored_proc(
