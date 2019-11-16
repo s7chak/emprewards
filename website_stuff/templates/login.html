@@ -30,7 +30,7 @@
       <div class="jumbotron">
         <heading> LOGIN PAGE</heading>
       </div>
-
+      <div align="center" color="red">{{ error }}</div>
       <form action="{{ url_for('login_index') }}" method="post">
         <div class="input-group col-md-4 col-lg-offset-4">
           <input type="email" class="form-control input-lg" name="email" placeholder="Email" id="email" autofocus required>  

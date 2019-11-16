@@ -1,11 +1,11 @@
-CREATE TABLE users(pk_user_id INT(100) PRIMARY KEY AUTO_INCREMENT, 
+CREATE TABLE users(pk_user_id INT(100) PRIMARY KEY AUTO_INCREMENT,
 user_fname varchar(50) DEFAULT NULL,
-user_lname varchar(50) DEFAULT NULL, 
-phone VARCHAR(100), 
-email VARCHAR(100) NOT NULL UNIQUE, 
-password VARCHAR(7) NOT NULL, 
+user_lname varchar(50) DEFAULT NULL,
+phone VARCHAR(100),
+email VARCHAR(100) NOT NULL UNIQUE,
+password VARCHAR(1000) NOT NULL,
 admin_status BOOLEAN,
-date_added timestamp NOT NULL); 
+date_added timestamp);
 
 CREATE TABLE months(
 	month_id int(11) PRIMARY KEY AUTO_INCREMENT
@@ -49,15 +49,18 @@ ALTER TABLE emprewardz_redemption ADD CONSTRAINT fk_redeem FOREIGN KEY (user_id)
 ALTER TABLE emprewardz_redemption ADD CONSTRAINT fk_month3 FOREIGN KEY (month_id2) REFERENCES months(month_id);
 
 CREATE or REPLACE View agg_points AS
-Select A.user_id, A.month_id2, A.PointsRedeemed, A.PointsGiven, B.PointsRecieved from
-	(SELECT user_id, month_id2,  points_redeemed as PointsRedeemed, points as PointsGiven from emprewardz_redemption as red join emprewardz_transact_points as trpo
-	on red.user_id = trpo.source_user
-	group by month_id2,user_id) A  Join
-	(SELECT dest_user, month_id1, points as PointsRecieved from emprewardz_transact_points
+Select A.user_id, A.month_id2, A.PointsRedeemed, A.PointsGiven, B.PointsReceived from
+    (SELECT red.user_id, red.month_id2, trpo.month_id1, sum(red.points_redeemed) as PointsRedeemed, sum(trpo.points) as PointsGiven
+    from emprewardz_redemption as red
+    join emprewardz_transact_points as trpo on red.user_id = trpo.source_user and red.month_id2=trpo.month_id1
+	group by red.month_id2,trpo.month_id1, red.user_id) A
+    Join
+    (SELECT dest_user, month_id1, sum(points) as PointsReceived from emprewardz_transact_points
 	group by month_id1,dest_user) B
 	on A.user_id=B.dest_user and A.month_id2=B.month_id1
-    order by B.PointsRecieved Desc;
-	
+    order by B.PointsReceived Desc;
+
+
 DELIMITER //
 CREATE PROCEDURE stored_proc(
     IN sources VARCHAR(255),
@@ -65,17 +68,17 @@ CREATE PROCEDURE stored_proc(
     IN pointsGR int,
     IN monthId int(11),
     IN comments VARCHAR(255)
-) 
+)
 BEGIN
 	Insert into emprewardz_transact_points values(sources,dest,pointsGR,SYSDATE(),monthId,comments);
-    
+
 	UPDATE emprewardz_point_holder
-    SET emprewardz_point_holder.points = emprewardz_point_holder.points - pointsGR 
+    SET emprewardz_point_holder.points = emprewardz_point_holder.points - pointsGR
 	WHERE sources = emprewardz_point_holder.user_id
-    ORDER BY month_id0 DESC LIMIT 1; 
-	
+    ORDER BY month_id0 DESC LIMIT 1;
+
 	UPDATE emprewardz_point_holder
-    SET emprewardz_point_holder.total = emprewardz_point_holder.total + pointsGR 
+    SET emprewardz_point_holder.total = emprewardz_point_holder.total + pointsGR
 	WHERE dest = emprewardz_point_holder.user_id
     ORDER BY month_id0 DESC LIMIT 1;
 END//

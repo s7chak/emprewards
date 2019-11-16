@@ -25,15 +25,23 @@ global myEmail
 app = Flask(__name__)
 app.secret_key = "iloveyou3000"
 
+def db_connection():
+        db_user = os.environ.get('CLOUD_SQL_USERNAME')
+        db_password = os.environ.get('CLOUD_SQL_PASSWORD')
+        db_name = os.environ.get('CLOUD_SQL_DATABASE_NAME')
+        db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
+        if os.environ.get('GAE_ENV') == 'standard':
+            unix_socket = '/cloudsql/{}'.format(db_connection_name)
+            cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name)
+        else:
+            host = '127.0.0.1'
+            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emp", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+
+        return cnx
+
 @app.route('/about')
 def about():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx = db_connection()
     adminError = None
     myEmail = session.get('myEmail')
     # with cnx.cursor() as cursor:
@@ -67,31 +75,42 @@ def login():
 
 @app.route('/login_index', methods=['GET', 'POST'])
 def login_index():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+
+    cnx = db_connection()
     adminError = None
     myEmail = request.form['email']
     mypassword = request.form['password']
 
-    session['myEmail'] = myEmail
-    session['mypassword'] = mypassword
+
+    salt = hex(12)
+    hashed_password = hashlib.sha512(mypassword.encode('utf-8') + salt.encode('utf-8')).hexdigest()
+    hpassword=str(hashed_password)
+
+
+    print(myEmail)
+    if session['myEmail']!=None:
+        session['myEmail'] = myEmail
+        session['mypassword'] = mypassword
 
 
     # with cnx.cursor() as cursor:
     cursor = cnx.cursor()
-    userCheck = cursor.execute('SELECT * FROM users WHERE password = %s AND email = %s', (mypassword, myEmail))
-    entry = cursor.fetchall()
-    
+    userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (myEmail,))
+    entry = cursor.fetchall()    
+
     num = list(entry)
+    stored_pass=num[0][5]
+    print(stored_pass)
+    print(hpassword)
+
     if len(num)==0:
-        error = 'Invalid credentials'
+        error = 'No user with given email found.'
+        return render_template('login.html', error=error)
+    elif stored_pass!=hpassword:
+        error = 'Invalid password entered.'
         return render_template('login.html', error=error)
     else:
+        print("Authenticated!")
         myAdmin=0
         for element in num:
             if element[6]==1:
@@ -107,7 +126,7 @@ def login_index():
     dd = cursor.fetchall()
     print(dd)
 
-    column = ["Giver","Reciever", "Points given","month", "month_id","Message"]
+    column = ["Giver","Receiver", "Points given","month", "month_id","Message"]
     list1 =[]
     for item in dd:
         hello = dict(zip(column, item))
@@ -118,13 +137,7 @@ def login_index():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx = db_connection()
     adminError = None
     myEmail = session.get('myEmail')
 
@@ -139,6 +152,7 @@ def home():
         error = 'Invalid credentials'
         return render_template('login.html', error=error)
     else:
+        print("Authenticated!")
         myAdmin=0
         for element in num:
             if element[6]==1:
@@ -154,7 +168,7 @@ def home():
     dd = cursor.fetchall()
     print(dd)
 
-    column = ["Giver","Reciever", "Points given","month", "month_id","Message"]
+    column = ["Giver","Receiver", "Points given","month", "month_id","Message"]
     list1 =[]
     for item in dd:
         hello = dict(zip(column, item))
@@ -181,20 +195,22 @@ def usersubmitted():
     if len(password) == 0:
         return ("INVALID password. PLEASE TRY AGAIN!")
     else:
-        if os.environ.get('GAE_ENV') == 'standard':
-            unix_socket = '/cloudsql/{}'.format(db_connection_name)
-            cnx = pymysql.connect(user=db_user, password=db_password,
-                                  unix_socket=unix_socket, db=db_name)
-        else:
-            host = '127.0.0.1'
-            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
-            #cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+        # if os.environ.get('GAE_ENV') == 'standard':
+        #     unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        #     cnx = pymysql.connect(user=db_user, password=db_password,
+        #                           unix_socket=unix_socket, db=db_name)
+        # else:
+        #     host = '127.0.0.1'
+        #     cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+        #     #cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+        cnx=db_connection()
+
         cursor = cnx.cursor()
 
         myEmail = session.get('myEmail')
         print("THIS IS MY password", myEmail)
 
-        salt = uuid.uuid4().hex
+        salt = hex(12)
         hashed_password = hashlib.sha512(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
         hpassword=str(hashed_password)
 
@@ -242,14 +258,7 @@ def deleted_form():
     myEmail = session.get('myEmail')
     #print("THIS IS MY password", myEmail)
 
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
-   
+    cnx=db_connection()
     cursor = cnx.cursor()
 
     userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
@@ -309,13 +318,7 @@ def usertable():
 
 @app.route('/aggregatePoints')
 def main3():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx=db_connection()
     cursor = cnx.cursor()    
     df = pd.read_sql_query("SELECT * FROM agg_points", cnx)
     return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
@@ -326,26 +329,14 @@ def report2():
 
 @app.route('/report3')
 def report3():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx=db_connection()
     cursor = cnx.cursor()    
     df = pd.read_sql_query("SELECT A.user_id, A.month_id2, A.PointsRedeemed FROM agg_points as A", cnx)
     return render_template('redeem_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 @app.route('/givePoints')
 def main4():
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx=db_connection()
     cursor = cnx.cursor() 
     myEmail = session.get('myEmail')
     #df= pd.read_sql_query('SELECT * FROM emprewardz_point_holder join users on pk_user_id=user_id where email = %s', (myEmail,),cnx)
@@ -374,13 +365,7 @@ def pointsGiven():
 
     myEmail = session.get('myEmail')
 
-    if os.environ.get('GAE_ENV') == 'standard':
-        unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        cnx = pymysql.connect(user=db_user, password=db_password,
-                              unix_socket=unix_socket, db=db_name)
-    else:
-        host = '127.0.0.1'
-        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    cnx=db_connection()
     cursor = cnx.cursor()    
 
     you = cursor.execute('SELECT e.user_id FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (myEmail,))
