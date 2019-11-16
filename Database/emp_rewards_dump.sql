@@ -13,8 +13,8 @@ CREATE TABLE months(
 
 CREATE TABLE emprewardz_point_holder (
   user_id int(11) NOT NULL,
-  total int(10) NOT NULL DEFAULT 0,
-  points int(10) NOT NULL,
+  totalpoints int(10) NOT NULL DEFAULT 0,
+  cpoints int(10) NOT NULL,
   month date,
   month_id0 int(11) NOT NULL,
   PRIMARY KEY (user_id,month_id0)
@@ -73,12 +73,12 @@ BEGIN
 	Insert into emprewardz_transact_points values(sources,dest,pointsGR,SYSDATE(),monthId,comments);
 
 	UPDATE emprewardz_point_holder
-    SET emprewardz_point_holder.points = emprewardz_point_holder.points - pointsGR
+    SET emprewardz_point_holder.totalpoints = emprewardz_point_holder.totalpoints - pointsGR
 	WHERE sources = emprewardz_point_holder.user_id
     ORDER BY month_id0 DESC LIMIT 1;
 
 	UPDATE emprewardz_point_holder
-    SET emprewardz_point_holder.total = emprewardz_point_holder.total + pointsGR
+    SET emprewardz_point_holder.cpoints = emprewardz_point_holder.cpoints + pointsGR
 	WHERE dest = emprewardz_point_holder.user_id
     ORDER BY month_id0 DESC LIMIT 1;
 END//

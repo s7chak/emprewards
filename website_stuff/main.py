@@ -21,6 +21,8 @@ db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 
 global mypassword
 global myEmail
+cpoints=0
+usertotalpoints=1000
 
 app = Flask(__name__)
 app.secret_key = "iloveyou3000"
@@ -120,8 +122,7 @@ def login_index():
     
     cnx.commit()
 
-    hi = cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
-    print(hi)
+    cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
 
     dd = cursor.fetchall()
     print(dd)
@@ -134,6 +135,8 @@ def login_index():
     df = pd.DataFrame(list1)
     cnx.close()
     return render_template("login_index.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -162,13 +165,13 @@ def home():
     
     cnx.commit()
 
-    hi = cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
+    hi = cursor.execute('SELECT u1.user_fname, u2.user_fname, e.points, e.transact_date, e.comment FROM emprewardz_transact_points as e join users as u1 on u1.pk_user_id= e.source_user join users as u2 on u2.pk_user_id= e.dest_user where u1.email = %s or u2.email=%s', (myEmail,myEmail))
     print(hi)
 
     dd = cursor.fetchall()
     print(dd)
 
-    column = ["Giver","Receiver", "Points given","month", "month_id","Message"]
+    column = ["Giver","Receiver", "Points given","month","Message"]
     list1 =[]
     for item in dd:
         hello = dict(zip(column, item))
@@ -177,10 +180,14 @@ def home():
     cnx.close()
     return render_template("home.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
+
+
 ## Add user - form 
 @app.route('/adduser')
 def main1():
     return render_template('user_form.html')
+
+
 
 ## Add user - submitted form 
 @app.route('/usersubmitted', methods=['GET', 'POST'])
@@ -195,14 +202,6 @@ def usersubmitted():
     if len(password) == 0:
         return ("INVALID password. PLEASE TRY AGAIN!")
     else:
-        # if os.environ.get('GAE_ENV') == 'standard':
-        #     unix_socket = '/cloudsql/{}'.format(db_connection_name)
-        #     cnx = pymysql.connect(user=db_user, password=db_password,
-        #                           unix_socket=unix_socket, db=db_name)
-        # else:
-        #     host = '127.0.0.1'
-        #     cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
-        #     #cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emprewardz", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
         cnx=db_connection()
 
         cursor = cnx.cursor()
@@ -236,7 +235,7 @@ def usersubmitted():
             months=entry2[0][0]
             print(months)
 
-            cursor.execute('INSERT INTO emprewardz_point_holder(user_id,points, month, month_id0) VALUES (%s, %s, %s, %s)',(ID,1000,date.today(),months))
+            cursor.execute('INSERT INTO emprewardz_point_holder(user_id,totalpoints, cpoints, month, month_id0) VALUES (%s, %s, %s, %s, %s)',(ID,1000,0,date.today(),months))
             cnx.commit()
             cnx.close()
             adminError = None
@@ -246,9 +245,13 @@ def usersubmitted():
     
     return render_template('user_submitted_form.html', user_fname=user_fname, user_lname=user_lname,email=email, phone=phone, password=password,admin=admin)
 
+
+
 @app.route('/deleteuser')
 def deletemain():
     return render_template('delete_user_form.html')
+
+
 
 ## Add user - submitted form 
 @app.route('/userdeleted', methods=['GET', 'POST'])
@@ -290,6 +293,8 @@ def deleted_form():
     return render_template('user_deleted_form.html', email=email)
 
 
+
+
 @app.route('/usertable', methods=['GET', 'POST'])
 def usertable():
     if os.environ.get('GAE_ENV') == 'standard':
@@ -316,23 +321,36 @@ def usertable():
 
     return Response(jusers, mimetype='application/json')
 
+
+
 @app.route('/aggregatePoints')
 def main3():
     cnx=db_connection()
     cursor = cnx.cursor()    
-    df = pd.read_sql_query("SELECT * FROM agg_points", cnx)
+    df = pd.read_sql_query("SELECT CONCAT(u.user_fname,' ',u.user_lname) as Name, u.email as Email, m.month_id, A.PointsRedeemed, A.PointsGiven, A.PointsReceived FROM agg_points as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
     return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 @app.route('/report2')
 def report2():
-    return ('x')
+    global usertotalpoints
+
+    cnx=db_connection()
+    cursor = cnx.cursor()    
+    df = pd.read_sql_query("SELECT CONCAT(u.user_fname,' ',u.user_lname) as Name, u.email as Email, p.totalpoints as Points from emprewardz_point_holder p join users u on p.user_id=u.pk_user_id where MONTH(month)=MONTH(SYSDATE()) and totalpoints=%s", cnx, params=(usertotalpoints,))
+    return render_template('stingy_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 @app.route('/report3')
 def report3():
     cnx=db_connection()
     cursor = cnx.cursor()    
-    df = pd.read_sql_query("SELECT A.user_id, A.month_id2, A.PointsRedeemed FROM agg_points as A", cnx)
+    df = pd.read_sql_query("SELECT CONCAT(u.user_fname,' ',u.user_lname) as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
     return render_template('redeem_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 @app.route('/givePoints')
 def main4():
@@ -340,7 +358,7 @@ def main4():
     cursor = cnx.cursor() 
     myEmail = session.get('myEmail')
     #df= pd.read_sql_query('SELECT * FROM emprewardz_point_holder join users on pk_user_id=user_id where email = %s', (myEmail,),cnx)
-    hi = cursor.execute('SELECT e.user_id,e.total,e.points,e.month,e.month_id0 FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (myEmail,))
+    hi = cursor.execute('SELECT e.user_id,e.totalpoints,e.cpoints,e.month,e.month_id0 FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (myEmail,))
     print(hi)
 
     dd = cursor.fetchall()
@@ -354,6 +372,8 @@ def main4():
     df = pd.DataFrame(list)
     print(list)
     return render_template('give_points.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 @app.route('/pointsGiven', methods=['GET', 'POST'])
 def pointsGiven():
@@ -373,7 +393,7 @@ def pointsGiven():
     entry1 = cursor.fetchall()
     print(entry1)
 
-    pointsToGive = cursor.execute('SELECT e.points FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s ORDER BY e.month_id0 DESC LIMIT 1', (myEmail,))
+    pointsToGive = cursor.execute('SELECT e.totalpoints FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s ORDER BY e.month_id0 DESC LIMIT 1', (myEmail,))
     print(pointsToGive)
     entry2 = cursor.fetchall()
     print(entry2)
@@ -405,9 +425,64 @@ def pointsGiven():
     cnx.close()
     return render_template('give_points.html')
 
+
+
 @app.route('/redeemPoints')
 def redeem():
-    return('x')
+    cnx=db_connection()
+    cursor = cnx.cursor()
+    myEmail = session.get('myEmail')
+
+    # today = datetime.today()
+    # datem = datetime(today.year, today.month, 1)
+
+    cursor.execute('SELECT sum(e.cpoints) FROM emprewardz_point_holder as e join users as u on u.pk_user_id= e.user_id where u.email = %s', (myEmail,))
+    entry = cursor.fetchall()
+    global cpoints
+    cpoints = int(entry[0][0])
+    print(cpoints)
+    return render_template('redeem_points_form.html', cpoints=cpoints)
+
+
+@app.route('/redeem_points', methods=['GET', 'POST'])
+def redeem_points():
+    
+    rpoints = int(request.form['rpoints'])
+    cnx=db_connection()
+    cursor = cnx.cursor()
+    
+    if rpoints < cpoints and is_number(rpoints):
+        myEmail = session.get('myEmail')
+        hi = cursor.execute('SELECT pk_user_id from users where email = %s', (myEmail,))
+        entry = cursor.fetchall()
+        print(entry)
+        ID=entry[0][0]
+
+        cursor.execute('SELECT max(month_id) from months')
+        entry2 = cursor.fetchall()
+        months=entry2[0][0]
+        
+
+        cursor.execute('Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values (%s, %s, %s, %s)', (ID,rpoints,date.today(),months))
+        cnx.commit()
+
+    else:
+        error = 'Invalid number of points entered'
+        return render_template('redeem_points_form.html', error=error, cpoints=cpoints)
+        
+    return render_template('redeem_points_form.html', cpoints=cpoints-rpoints)
+
+
+def is_number(s):
+    try:
+        float(s)
+        if s>0:
+            return True
+        else:
+            return False
+    except ValueError:
+        return False
+
 
 if __name__ == '__main__':
     # app.run(host='127.0.0.1', port=8080, debug=True)

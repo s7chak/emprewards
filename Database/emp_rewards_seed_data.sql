@@ -1,8 +1,10 @@
+INSERT into months(month_id) values(1);
+INSERT into months(month_id) values(2);
+
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Yeggi', 'Lee', '7745787750', 'yleekwon3@gmail.com', 'yl35726', True, SYSDATE());
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Dhrov', 'Subramanian', '5127580498', 'dhrov@utexas.edu', 'ds39547', True, SYSDATE());
 INSERT into users (user_fname,user_lname, phone, email, password, admin_status, date_added) values ('Subhayu', 'Chakravarty', '7377011233', 'subhayu@utexas.edu', 'sc59695', True, SYSDATE());
-INSERT into months(month_id) values(1);
-INSERT into months(month_id) values(2);
+
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(1,2,50,'2019-09-01',1);
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(1,2,50,'2019-09-01',1);
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(2,1,100,'2019-09-01',1);
@@ -33,16 +35,18 @@ Insert into emprewardz_transact_points(source_user,dest_user,points,transact_dat
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(1,2,100,'2019-10-25',2);
 Insert into emprewardz_transact_points(source_user,dest_user,points,transact_date,month_id1) values(3,1,10,'2019-10-26',2);
 
+
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(1,1000,0,'2019-09-01',1);
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(2,1000,0,'2019-09-01',1);
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(3,1000,0,'2019-09-01',1);
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(1,1000,0,'2019-10-01',2);
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(2,1000,0,'2019-10-01',2);
+Insert into emprewardz_point_holder(user_id,totalpoints,cpoints, month, month_id0) values(3,1000,0,'2019-10-01',2);
+
+
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(2,50,'2019-09-25',1);
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(1,100,'2019-09-28',1);
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(3,100,'2019-09-29',1);
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(3,80,'2019-10-25',2);
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(2,100,'2019-10-25',2);
 Insert into emprewardz_redemption(user_id,points_redeemed,date_redeemed, month_id2) values(1,100,'2019-10-26',2);
-
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(1,1000,'2019-09-01',1);
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(2,1000,'2019-09-01',1);
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(3,1000,'2019-09-01',1);
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(1,1000,'2019-10-01',2);
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(2,1000,'2019-10-01',2);
-Insert into emprewardz_point_holder(user_id,points, month, month_id0) values(3,1000,'2019-10-01',2);
