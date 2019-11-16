@@ -3,13 +3,15 @@ import os
 import mysql.connector
 import mysql.connector
 import pymysql
-from flask import Flask,render_template,request,session, jsonify, Response
+from flask import Flask,render_template,request,session, jsonify, Response, redirect, url_for
+from urllib.parse import quote, unquote
 import datetime
 import pandas as pd
 import json
 import uuid
 import hashlib
 from datetime import date
+from functools import wraps
 
 
 
@@ -41,6 +43,7 @@ def db_connection():
 
         return cnx
 
+
 @app.route('/about')
 def about():
     cnx = db_connection()
@@ -66,6 +69,8 @@ def about():
     cnx.close()
 
     return render_template('about.html', admin = myAdmin)
+
+
 
 @app.route('/info')
 def info():
@@ -138,6 +143,7 @@ def login_index():
 
 
 
+
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     cnx = db_connection()
@@ -179,6 +185,8 @@ def home():
     df = pd.DataFrame(list1)
     cnx.close()
     return render_template("home.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+
 
 
 
@@ -482,6 +490,106 @@ def is_number(s):
             return False
     except ValueError:
         return False
+
+
+
+def you_sure():
+    return "Are you sure?"
+
+def confirmation_required(desc_fn):
+    def inner(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if request.args.get('confirm') != '1':
+                desc = desc_fn()
+                return redirect(url_for('confirm', 
+                    desc=desc, action_url=quote(request.url)))
+            return f(*args, **kwargs)
+        return wrapper
+    return inner
+
+@app.route('/confirm')
+def confirm():
+    desc = request.args['desc']
+    action_url = unquote(request.args['action_url'])
+    print("Got Called")
+
+    return render_template('_confirm.html', desc=desc, action_url=action_url)
+
+
+
+
+@app.route('/resetmonth')
+@confirmation_required(you_sure)
+def resetmonth():
+    cnx = db_connection()
+    adminError = None
+    myEmail = session.get('myEmail')
+    # with cnx.cursor() as cursor:
+    cursor = cnx.cursor()
+    userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (myEmail,))
+    entry = cursor.fetchall()
+    
+    num = list(entry)
+    if len(num)==0:
+        error = 'Invalid credentials'
+        return render_template('login.html', error=error)
+    else:
+        print("Authenticated!")
+        myAdmin=0
+        for element in num:
+            if element[6]==1:
+                myAdmin=1
+                break
+        error = None
+    
+    return render_template("home.html", admin = myAdmin)
+    # return render_template("home.html", admin = myAdmin)
+
+
+@app.route('/resetpoints', methods=['GET'])
+def resetpoints():
+    cnx = db_connection()
+    adminError = None
+    myEmail = session.get('myEmail')
+    cursor = cnx.cursor(buffered=True)
+    userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (myEmail,))
+    entry = cursor.fetchall()
+    num = list(entry)
+    if len(num)==0:
+        error = 'Invalid credentials'
+        return render_template('login.html', error=error)
+    else:
+        print("Authenticated!")
+        myAdmin=0
+        for element in num:
+            if element[6]==1:
+                myAdmin=1
+                break
+        error = None
+    
+    print("Next")
+    if myAdmin==1:
+        userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (myEmail,))
+
+    
+    x=cursor.execute('SELECT max(month_id)+1 FROM months')
+    latest_monthid = int(cursor.fetchall()[0][0])
+    print(latest_monthid)
+    cursor.execute('SELECT distinct user_id from emprewardz_point_holder where MONTH(month)=MONTH(SYSDATE());')
+    users = cursor.fetchall()
+
+    cursor.execute('INSERT into months values(%s)', (latest_monthid,))
+    for u in users:
+        userid=int(u[0])
+        cursor.execute('INSERT into emprewardz_point_holder (user_id,totalpoints,month, month_id0) values(%s,1000,%s,%s)', (userid, date.today(), latest_monthid))
+    
+    
+    cnx.commit()
+    cnx.close()
+
+    return render_template("home.html", admin = myAdmin)
+
 
 
 if __name__ == '__main__':

@@ -2,12 +2,13 @@
 
 <html>
   <head>
-    <title> EVENT FORM</title>
+    <title> WELCOME PAGE</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+
 
     <style>
 
@@ -52,7 +53,7 @@
 /*      h1, h2, h3, h4, h5, h6 {
         color: #000;
         font-family: "Playfair Display", Georgia, serif;
-        font-weight: 600;
+        font-weight: 400;
         margin: 0 0 30px 0; 
       }*/
 
@@ -175,54 +176,11 @@
             position: relative;
         }
 
-        table.dataframe {
-          width: 100%;
-          border: none;
-          border-bottom: 1px solid #C8C8C8;
-          border-collapse: collapse;
-          text-align:center;
-          padding: 10px;
-          margin-bottom: 40px;
-          font-size: 0.9em;
-          padding: 8px;
-        }
-
-        .dataframe td {
-          border: none;
-          border-bottom: 1px solid #C8C8C8;
-          border-collapse: collapse;
-          text-align:center;
-          padding: 10px;
-          margin-bottom: 40px;
-          font-size: 0.9em;
-          padding: 8px;
-        }
-        .dataframe th {
-          border: none;
-          border-bottom: 1px solid #C8C8C8;
-          border-collapse: collapse;
-          text-align:center;
-          padding: 10px;
-          margin-bottom: 40px;
-          font-size: 0.9em;
-          background-color: #BEBEBE;
-        }
-
-        tr:nth-child(odd) {
-         background-color:#eee; 
-        }
-        
-        tr:nth-child(even) {
-          background-color:#fff; 
-        }
-
-        tr:hover { 
-          background-color:#ffa64d ;
-        }
+        #wrapper.toggled #page-content-wrapper {
     </style>
   </head>
    
-  <div id="wrapper">
+<div id="wrapper">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav" >
             <li class="sidebar-brand">
@@ -235,6 +193,7 @@
               </div>
             </li>
             <br>
+            {% if admin == 1 %}
               <li><a href="about" > ABOUT </a></li>
               <li><a href="home" > HOME PAGE</a></li>
               <li><a href="adduser" > ADD A USER </a></li>
@@ -243,30 +202,30 @@
               <li><a href="report3" > REDEMPTION STATISTICS </a></li>
               <li><a href="deleteuser" > REMOVE A USER </a></li>
               <li><a href="resetmonth" > RESET MONTH </a></li>
+            {% else %}
+              <li><a href="about" > ABOUT </a></li>
+              <li><a href="home" > HOME PAGE</a></li>
+              <li><a href="givePoints" > GIVE POINTS </a></li>
+              <li><a href="redeemPoints" > REDEEM POINTS</a></li>
+            {% endif %}
+
         </ul>
     </div>
-    <!-- /#sidebar-wrapper -->
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                  <h1> Aggregate Monthly Points </h1>
-                    <p> 
-                      Aggregate Monthly Points!
-                       <br> <br> 
-                      <br> <br> <br> <br>
-                      {% for table in tables %}
-                          {{ table|safe }}
-                      {% endfor %}
-                    </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </html>
-<html>
+<body>
+<h2 align="center">{{ desc }}</h1>
+<div align="center">
+<form action="{{ url_for('resetpoints') }}" method="GET">
+    <input type="hidden" name="confirm" value="1">
+    <input type="submit" value="Yes" align="center">
+</form>
+</div>
+<div align="center">
+<form action="{{ url_for('login') }}" method="GET">
+    <input type="hidden" name="confirm" value="2">
+    <input type="submit" value="No" align="center">
+</form>
+</div>
+
+</body>
+</html>
