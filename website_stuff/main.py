@@ -79,7 +79,7 @@ def login_index():
     mypassword = request.form['password']
 
     session['myEmail'] = myEmail
-    session['mypassword'] = myEmail
+    session['mypassword'] = mypassword
 
 
     # with cnx.cursor() as cursor:
@@ -100,9 +100,68 @@ def login_index():
         error = None
     
     cnx.commit()
-    cnx.close()
 
-    return render_template("login_index.html", admin = myAdmin)
+    hi = cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
+    print(hi)
+
+    dd = cursor.fetchall()
+    print(dd)
+
+    column = ["Giver","Reciever", "Points given","month", "month_id","Message"]
+    list1 =[]
+    for item in dd:
+        hello = dict(zip(column, item))
+        list1.append(hello.copy())
+    df = pd.DataFrame(list1)
+    cnx.close()
+    return render_template("login_index.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    if os.environ.get('GAE_ENV') == 'standard':
+        unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        cnx = pymysql.connect(user=db_user, password=db_password,
+                              unix_socket=unix_socket, db=db_name)
+    else:
+        host = '127.0.0.1'
+        cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
+    adminError = None
+    myEmail = session.get('myEmail')
+
+
+    # with cnx.cursor() as cursor:
+    cursor = cnx.cursor()
+    userCheck = cursor.execute('SELECT * FROM users WHERE email = %s', (myEmail,))
+    entry = cursor.fetchall()
+    
+    num = list(entry)
+    if len(num)==0:
+        error = 'Invalid credentials'
+        return render_template('login.html', error=error)
+    else:
+        myAdmin=0
+        for element in num:
+            if element[6]==1:
+                myAdmin=1
+                break
+        error = None
+    
+    cnx.commit()
+
+    hi = cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
+    print(hi)
+
+    dd = cursor.fetchall()
+    print(dd)
+
+    column = ["Giver","Reciever", "Points given","month", "month_id","Message"]
+    list1 =[]
+    for item in dd:
+        hello = dict(zip(column, item))
+        list1.append(hello.copy())
+    df = pd.DataFrame(list1)
+    cnx.close()
+    return render_template("home.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 ## Add user - form 
 @app.route('/adduser')

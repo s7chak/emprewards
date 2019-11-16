@@ -55,7 +55,8 @@ Select A.user_id, A.month_id2, A.PointsRedeemed, A.PointsGiven, B.PointsRecieved
 	group by month_id2,user_id) A  Join
 	(SELECT dest_user, month_id1, points as PointsRecieved from emprewardz_transact_points
 	group by month_id1,dest_user) B
-	on A.user_id=B.dest_user and A.month_id2=B.month_id1;
+	on A.user_id=B.dest_user and A.month_id2=B.month_id1
+    order by B.PointsRecieved Desc;
 	
 DELIMITER //
 CREATE PROCEDURE stored_proc(
@@ -78,4 +79,3 @@ BEGIN
 	WHERE dest = emprewardz_point_holder.user_id
     ORDER BY month_id0 DESC LIMIT 1;
 END//
-
