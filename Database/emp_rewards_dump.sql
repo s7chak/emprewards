@@ -49,15 +49,18 @@ ALTER TABLE emprewardz_redemption ADD CONSTRAINT fk_redeem FOREIGN KEY (user_id)
 ALTER TABLE emprewardz_redemption ADD CONSTRAINT fk_month3 FOREIGN KEY (month_id2) REFERENCES months(month_id);
 
 CREATE or REPLACE View agg_points AS
-Select A.source_user, B.month_id1, A.PointsRedeemed, A.PointsGiven, B.PointsReceived from
-    (SELECT trpo.source_user, red.user_id, red.month_id2, trpo.month_id1, sum(red.points_redeemed) as PointsRedeemed, sum(trpo.points) as PointsGiven
+Select A.user_id, A.month_id, A.PointsRedeemed, A.PointsGiven, B.PointsReceived from
+    (SELECT u.pk_user_id as user_id, m.month_id, red.month_id2, trpo.month_id1, sum(red.points_redeemed) as PointsRedeemed, sum(trpo.points) as PointsGiven
     from emprewardz_redemption as red
-    right outer join emprewardz_transact_points as trpo on red.user_id = trpo.source_user and red.month_id2=trpo.month_id1
+    right join emprewardz_transact_points as trpo on red.user_id = trpo.source_user and red.month_id2=trpo.month_id1
+    left join users as u on u.pk_user_id=trpo.source_user
+    left join months as m on m.month_id=trpo.month_id1
 	group by red.month_id2,trpo.month_id1, red.user_id) A
     left Join
-    (SELECT dest_user, month_id1, sum(points) as PointsReceived from emprewardz_transact_points
-	group by month_id1,dest_user) B
-	on A.source_user=B.dest_user and A.month_id1=B.month_id1
+    (SELECT dest_user, month_id1, sum(points) as PointsReceived from emprewardz_transact_points as trpo
+    left join users as u on u.pk_user_id=trpo.dest_user
+	left join months as m on m.month_id=trpo.month_id1
+	group by month_id1,dest_user) B on A.user_id=B.dest_user and A.month_id=B.month_id1
     order by B.PointsReceived Desc;
 
 CREATE or REPLACE View agg_points2 AS
