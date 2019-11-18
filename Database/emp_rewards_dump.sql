@@ -65,13 +65,13 @@ Select A.user_id, A.month_id, A.PointsRedeemed, A.PointsGiven, B.PointsReceived 
 
 CREATE or REPLACE View agg_points2 AS
 Select * from(
-	SELECT U.pk_user_id as user_id,u.user_fname as Name, m.month_id as month_id2, IFNULL(t.PointsGiven,0) AS PointsGiven, IFNULL(tr.PointsReceived,0) AS PointsReceived, IFNULL(r.PointsRedeemed,0) PointsRedeemed from users U
+	SELECT U.pk_user_id as user_id,CONCAT(U.user_fname,' ',U.user_lname) as Name, m.month_id as month_id2, IFNULL(t.PointsGiven,0) AS PointsGiven, IFNULL(tr.PointsReceived,0) AS PointsReceived, IFNULL(r.PointsRedeemed,0) PointsRedeemed from users U
 	left outer join
-	(SELECT trpo.source_user, trpo.month_id1, sum(trpo.points) as PointsGiven from emprewardz_transact_points as trpo group by trpo.month_id1, trpo.source_user) as t on t.source_user=u.pk_user_id
+	(SELECT trpo.source_user, trpo.month_id1, sum(trpo.points) as PointsGiven from emprewardz_transact_points as trpo group by trpo.month_id1, trpo.source_user) as t on t.source_user=U.pk_user_id
 	left outer join
-	(SELECT trr.dest_user, trr.month_id1, sum(trr.points) as PointsReceived from emprewardz_transact_points as trr group by trr.month_id1, trr.dest_user) as tr on tr.dest_user=u.pk_user_id
+	(SELECT trr.dest_user, trr.month_id1, sum(trr.points) as PointsReceived from emprewardz_transact_points as trr group by trr.month_id1, trr.dest_user) as tr on tr.dest_user=U.pk_user_id
 	left outer join
-	(SELECT red.user_id, red.month_id2, sum(red.points_redeemed) as PointsRedeemed from emprewardz_redemption as red group by red.month_id2, red.user_id) as r on r.user_id=u.pk_user_id and r.month_id2=t.month_id1
+	(SELECT red.user_id, red.month_id2, sum(red.points_redeemed) as PointsRedeemed from emprewardz_redemption as red group by red.month_id2, red.user_id) as r on r.user_id=U.pk_user_id and r.month_id2=t.month_id1
 	join months m on (m.month_id=t.month_id1 or m.month_id=r.month_id2 or m.month_id=tr.month_id1 ))as fin
 group by month_id2,user_id
 order by PointsReceived desc, month_id2 desc, user_id

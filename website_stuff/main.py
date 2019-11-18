@@ -375,7 +375,7 @@ def main4():
     dd = cursor.fetchall()
     print(dd)
 
-    column = ["user_id","My total points", "Points to give","month", "month_id"]
+    column = ["user_id","Points to give", "My total points","month", "month_id"]
     list =[]
     for item in dd:
         hello = dict(zip(column, item))

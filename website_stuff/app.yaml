@@ -5,5 +5,5 @@ env_variables:
   CLOUD_SQL_USERNAME: root
   CLOUD_SQL_PASSWORD: password
   CLOUD_SQL_DATABASE_NAME: DBMAN
-  CLOUD_SQL_CONNECTION_NAME: comehither:us-central1:comehither
+  CLOUD_SQL_CONNECTION_NAME: comehither:us-central1:comehithers
 # [END gae_python37_cloudsql_config]
