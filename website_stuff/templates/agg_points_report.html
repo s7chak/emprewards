@@ -257,6 +257,12 @@
                       Aggregate Monthly Points!
                        <br> <br> 
                       <br> <br> <br> <br>
+                      <p>Aggregate By Month </p> 
+                      {% for form in forms %}
+                          {{ form|safe }}
+                      {% endfor %}
+                      <br> <br>
+                      <p>Aggregate By User </p>                       
                       {% for table in tables %}
                           {{ table|safe }}
                       {% endfor %}

@@ -231,8 +231,14 @@
                        {% else %}
                          <strong>You are registered as a user </strong> 
                          <br> <br> <br> <br>
+                         <p>Points Given and Recieved </p> 
                           {% for table in tables %}
                               {{ table|safe }}
+                          {% endfor %}
+                          <br> <br>
+                          <p>Points Redeemed </p> 
+                          {% for form in forms %}
+                              {{ form|safe }}
                           {% endfor %}
                        {% endif %}
                      </div>

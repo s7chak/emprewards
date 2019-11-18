@@ -128,19 +128,37 @@ def login_index():
     
     cnx.commit()
 
-    cursor.execute('SELECT * FROM emprewardz_transact_points as e join users as u on u.pk_user_id= e.source_user OR u.pk_user_id= e.dest_user where u.email = %s', (myEmail,))
+    hi = cursor.execute('SELECT u1.user_fname, u2.user_fname, e.points, e.transact_date, e.comment FROM emprewardz_transact_points as e join users as u1 on u1.pk_user_id= e.source_user join users as u2 on u2.pk_user_id= e.dest_user where u1.email = %s or u2.email=%s', (myEmail,myEmail))
+    print(hi)
 
     dd = cursor.fetchall()
     print(dd)
 
-    column = ["Giver","Receiver", "Points given","month", "month_id","Message"]
+    column = ["Giver","Receiver", "Points given","month","Message"]
     list1 =[]
     for item in dd:
         hello = dict(zip(column, item))
         list1.append(hello.copy())
     df = pd.DataFrame(list1)
+
+
+    hi1 = cursor.execute('SELECT u1.user_fname, e.month_id2, e.points_redeemed FROM emprewardz_redemption as e join users as u1 on u1.pk_user_id= e.user_id where u1.email = %s', (myEmail,))
+    print(hi1)
+
+    dd1 = cursor.fetchall()
+    print(dd1)
+
+    column1 = ["Name","Month", "Points Redeemed"]
+    list2 =[]
+    for item in dd1:
+        hello = dict(zip(column1, item))
+        list2.append(hello.copy())
+    df2 = pd.DataFrame(list2)
+
+
+
     cnx.close()
-    return render_template("login_index.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+    return render_template("login_index.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values, forms=[df2.to_html(classes='data', index=False, header="true")],titles2=df2.columns.values )
 
 
 
@@ -184,8 +202,25 @@ def home():
         hello = dict(zip(column, item))
         list1.append(hello.copy())
     df = pd.DataFrame(list1)
+
+
+    hi1 = cursor.execute('SELECT u1.user_fname, e.month_id2, e.points_redeemed FROM emprewardz_redemption as e join users as u1 on u1.pk_user_id= e.user_id where u1.email = %s', (myEmail,))
+    print(hi1)
+
+    dd1 = cursor.fetchall()
+    print(dd1)
+
+    column1 = ["Name","Month", "Points Redeemed"]
+    list2 =[]
+    for item in dd1:
+        hello = dict(zip(column1, item))
+        list2.append(hello.copy())
+    df2 = pd.DataFrame(list2)
+
+
+
     cnx.close()
-    return render_template("home.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+    return render_template("home.html", admin = myAdmin, tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values, forms=[df2.to_html(classes='data', index=False, header="true")],titles2=df2.columns.values )
 
 
 
@@ -339,7 +374,10 @@ def main3():
     df = pd.read_sql_query("SELECT * FROM agg_points2", cnx)
     df.fillna(0, inplace=True)
 
-    return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
+    df2 = pd.read_sql_query("SELECT month_id2 as Month,sum(PointsGiven) As TotalPointsGiven,sum(PointsReceived)As TotalPointsReceived,sum(PointsRedeemed) As TotalPointsRedeemed FROM agg_points2 group by month_id2", cnx)
+    df2.fillna(0, inplace=True)
+
+    return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values, forms=[df2.to_html(classes='data', index=False, header="true")], titles2=df2.columns.values )
 
 
 
@@ -357,8 +395,30 @@ def report2():
 @app.route('/report3')
 def report3():
     cnx=db_connection()
-    cursor = cnx.cursor()    
-    df = pd.read_sql_query("SELECT A.Name as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points2 as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
+    cursor = cnx.cursor()   
+    month = cursor.execute('SELECT max(month_id) from months')
+    entry = cursor.fetchall()
+    months = entry[0][0]
+
+    month1 = cursor.execute('SELECT max(month_id)-1 from months')
+    entry1 = cursor.fetchall()
+    months1 = entry1[0][0]
+
+    hi = cursor.execute("SELECT A.Name as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points2 as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2 where m.month_id = %s or m.month_id = %s ", (months,months1))
+    print(hi)
+
+    dd = cursor.fetchall()
+    print(dd)
+
+    column = ["Name","Email", "month", "Points Redeemed"]
+    list =[]
+    for item in dd:
+        hello = dict(zip(column, item))
+        list.append(hello.copy())
+    df = pd.DataFrame(list)
+    print(list)
+
+    #df = pd.read_sql_query("SELECT A.Name as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points2 as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
     return render_template('redeem_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 
