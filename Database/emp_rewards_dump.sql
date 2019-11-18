@@ -64,25 +64,17 @@ Select A.user_id, A.month_id, A.PointsRedeemed, A.PointsGiven, B.PointsReceived 
     order by B.PointsReceived Desc;
 
 CREATE or REPLACE View agg_points2 AS
-SELECT U.pk_user_id as user_id,CONCAT(u.user_fname,' ',u.user_lname) as Name, m.month_id as month_id2, t.PointsGiven, tr.PointsReceived, r.PointsRedeemed
-from users U
-left outer join
-(SELECT trpo.source_user, trpo.month_id1, sum(trpo.points) as PointsGiven
-    from emprewardz_transact_points as trpo
-	group by trpo.month_id1, trpo.source_user) as t on t.source_user=u.pk_user_id
-
-left outer join
-(SELECT trr.dest_user, trr.month_id1, sum(trr.points) as PointsReceived
-    from emprewardz_transact_points as trr
-	group by trr.month_id1, trr.dest_user) as tr on tr.dest_user=u.pk_user_id
-
-left outer join
-(SELECT red.user_id, red.month_id2, sum(red.points_redeemed) as PointsRedeemed
-    from emprewardz_redemption as red
-	group by red.month_id2, red.user_id) as r on r.user_id=u.pk_user_id and r.month_id2=t.month_id1
-
-join months m on (m.month_id=t.month_id1 or m.month_id=r.month_id2 or m.month_id=tr.month_id1 )
-order by tr.PointsReceived desc, t.month_id1 desc, U.pk_user_id
+Select * from(
+	SELECT U.pk_user_id as user_id,u.user_fname as Name, m.month_id as month_id2, IFNULL(t.PointsGiven,0) AS PointsGiven, IFNULL(tr.PointsReceived,0) AS PointsReceived, IFNULL(r.PointsRedeemed,0) PointsRedeemed from users U
+	left outer join
+	(SELECT trpo.source_user, trpo.month_id1, sum(trpo.points) as PointsGiven from emprewardz_transact_points as trpo group by trpo.month_id1, trpo.source_user) as t on t.source_user=u.pk_user_id
+	left outer join
+	(SELECT trr.dest_user, trr.month_id1, sum(trr.points) as PointsReceived from emprewardz_transact_points as trr group by trr.month_id1, trr.dest_user) as tr on tr.dest_user=u.pk_user_id
+	left outer join
+	(SELECT red.user_id, red.month_id2, sum(red.points_redeemed) as PointsRedeemed from emprewardz_redemption as red group by red.month_id2, red.user_id) as r on r.user_id=u.pk_user_id and r.month_id2=t.month_id1
+	join months m on (m.month_id=t.month_id1 or m.month_id=r.month_id2 or m.month_id=tr.month_id1 ))as fin
+group by month_id2,user_id
+order by PointsReceived desc, month_id2 desc, user_id
 ;
 
 
@@ -107,3 +99,5 @@ BEGIN
 	WHERE dest = emprewardz_point_holder.user_id
     ORDER BY month_id0 DESC LIMIT 1;
 END//
+
+select * from months;

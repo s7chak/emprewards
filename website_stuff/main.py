@@ -39,7 +39,8 @@ def db_connection():
             cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name)
         else:
             host = '127.0.0.1'
-            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emp", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+            #cnx = mysql.connector.connect(host="127.0.0.1", user = "root", password="root1234", database = "emp", unix_socket="/tmp/mysql.sock", auth_plugin="mysql_native_password")
+            cnx = mysql.connector.connect(host="127.0.0.1", user = "root", database = "test", unix_socket="C:/xampp/mysql/mysql.sock")
 
         return cnx
 
@@ -95,9 +96,9 @@ def login_index():
 
 
     print(myEmail)
-    if session['myEmail']!=None:
-        session['myEmail'] = myEmail
-        session['mypassword'] = mypassword
+    #if session['myEmail']!=None:
+    session['myEmail'] = myEmail
+    session['mypassword'] = mypassword
 
 
     # with cnx.cursor() as cursor:
@@ -335,7 +336,7 @@ def usertable():
 def main3():
     cnx=db_connection()
     cursor = cnx.cursor()    
-    df = pd.read_sql_query("SELECT A.Name as Name, u.email as Email, m.month_id, A.PointsRedeemed, A.PointsGiven, A.PointsReceived FROM agg_points as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
+    df = pd.read_sql_query("SELECT * FROM agg_points2", cnx)
     df.fillna(0, inplace=True)
 
     return render_template('agg_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
@@ -357,7 +358,7 @@ def report2():
 def report3():
     cnx=db_connection()
     cursor = cnx.cursor()    
-    df = pd.read_sql_query("SELECT CONCAT(u.user_fname,' ',u.user_lname) as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
+    df = pd.read_sql_query("SELECT A.Name as Name, u.email as Email, m.month_id, A.PointsRedeemed FROM agg_points2 as A join users u on u.pk_user_id=A.user_id join months m on m.month_id=A.month_id2", cnx)
     return render_template('redeem_points_report.html', tables=[df.to_html(classes='data', index=False, header="true")], titles=df.columns.values )
 
 
